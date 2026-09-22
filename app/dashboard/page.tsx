@@ -1,55 +1,61 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { Suspense } from "react"
 
-export default function Page() {
+import { PageHeader } from "@/components/layout/page-header"
+import { HealthStrip } from "@/components/overview/health-strip"
+import { IgnoredEventTypes } from "@/components/overview/ignored-event-types"
+import { OutcomeMix } from "@/components/overview/outcome-mix"
+import { SummaryStats } from "@/components/overview/summary-stats"
+import { AutoRefresh } from "@/components/shared/auto-refresh"
+import { WindowSelect } from "@/components/shared/window-select"
+import { ChartSkeleton } from "@/components/skeletons/chart-skeleton"
+import { StatGridSkeleton } from "@/components/skeletons/stat-grid-skeleton"
+import { TableSkeleton } from "@/components/skeletons/table-skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
+import { requireSession } from "@/lib/auth/session"
+import { windowQuerySchema } from "@/lib/validations/query"
+import type { SearchParams } from "@/types/query"
+
+interface Props {
+  searchParams: Promise<SearchParams>
+}
+
+export default async function OverviewPage({ searchParams }: Props) {
+  await requireSession()
+  const { window } = windowQuerySchema.parse(await searchParams)
+
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Build Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <>
+      <PageHeader
+        title="Overview"
+        description="Is the bridge healthy? Outcome mix, queue depth and router state."
+        actions={
+          <>
+            <WindowSelect value={window} />
+            <AutoRefresh intervalMs={60_000} />
+          </>
+        }
+      />
+
+      <Suspense fallback={<Skeleton className="h-6 w-80" />}>
+        <HealthStrip />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <StatGridSkeleton count={3} className="grid auto-rows-min gap-4 md:grid-cols-3" />
+        }
+      >
+        <SummaryStats window={window} />
+      </Suspense>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Suspense fallback={<ChartSkeleton bars={6} />}>
+          <OutcomeMix window={window} />
+        </Suspense>
+        <Suspense fallback={<TableSkeleton columns={3} rows={4} />}>
+          <IgnoredEventTypes window={window} />
+        </Suspense>
+      </div>
+    </>
   )
 }

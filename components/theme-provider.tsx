@@ -47,11 +47,13 @@ function ThemeHotkey() {
         return
       }
 
-      if (event.key.toLowerCase() !== "d") {
+      // Typing targets first: nothing typed into a field may toggle the theme.
+      if (isTypingTarget(event.target)) {
         return
       }
 
-      if (isTypingTarget(event.target)) {
+      // Autofill and password managers dispatch synthetic keydowns without `key`.
+      if (typeof event.key !== "string" || event.key.toLowerCase() !== "d") {
         return
       }
 

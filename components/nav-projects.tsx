@@ -1,10 +1,13 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { toast } from "sonner"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -16,30 +19,42 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { DotsThreeOutlineIcon, FolderIcon, ShareIcon, TrashIcon } from "@phosphor-icons/react/ssr"
+import { isActiveUrl } from "@/lib/nav"
+import type { NavShortcut } from "@/types/nav"
+import {
+  ArrowSquareOutIcon,
+  DotsThreeOutlineIcon,
+  LinkIcon,
+} from "@phosphor-icons/react/ssr"
 
-export function NavProjects({
-  projects,
-}: {
-  projects: {
-    name: string
-    url: string
-    icon: React.ReactNode
-  }[]
-}) {
+interface Props {
+  shortcuts: NavShortcut[]
+}
+
+export function NavProjects({ shortcuts }: Props) {
   const { isMobile } = useSidebar()
+  const pathname = usePathname()
+
+  async function copyLink(url: string) {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${url}`)
+      toast.success("Link copied")
+    } catch {
+      toast.error("Could not copy the link")
+    }
+  }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Shortcuts</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {shortcuts.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                {item.icon}
+            <SidebarMenuButton asChild isActive={isActiveUrl(item.url, pathname)}>
+              <Link href={item.url}>
+                <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -47,8 +62,7 @@ export function NavProjects({
                   showOnHover
                   className="aria-expanded:bg-muted"
                 >
-                  <DotsThreeOutlineIcon
-                  />
+                  <DotsThreeOutlineIcon />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
@@ -57,30 +71,20 @@ export function NavProjects({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
-                  <FolderIcon className="text-muted-foreground" />
-                  <span>View Project</span>
+                <DropdownMenuItem asChild>
+                  <a href={item.url} target="_blank" rel="noreferrer">
+                    <ArrowSquareOutIcon className="text-muted-foreground" />
+                    <span>Open in new tab</span>
+                  </a>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <ShareIcon className="text-muted-foreground" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <TrashIcon className="text-muted-foreground" />
-                  <span>Delete Project</span>
+                <DropdownMenuItem onSelect={() => copyLink(item.url)}>
+                  <LinkIcon className="text-muted-foreground" />
+                  <span>Copy link</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <DotsThreeOutlineIcon
-            />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )

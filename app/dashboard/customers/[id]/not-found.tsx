@@ -8,11 +8,11 @@ export default function CustomerNotFound() {
   return (
     <EmptyState
       icon={<UserMinusIcon />}
-      title="No customer with that Zoho id"
-      description="The bridge has no mapping, no audit row and nothing queued for it. Check the id, or search by name or phone."
+      title="Nenhum cliente com esse id do Zoho"
+      description="A ponte não tem mapeamento, nenhum registro de auditoria e nada na fila para ele. Confira o id ou busque por nome ou telefone."
       action={
         <Button asChild variant="outline">
-          <Link href="/dashboard/customers">Back to search</Link>
+          <Link href="/dashboard/customers">Voltar para a busca</Link>
         </Button>
       }
     />

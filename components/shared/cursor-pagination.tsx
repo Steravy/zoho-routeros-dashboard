@@ -19,7 +19,7 @@ export function CursorPagination({ nextCursor, count }: Props) {
 
   return (
     <div className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
-      <span>{count} rows on this page</span>
+      <span>{count} linhas nesta página</span>
       <div className="flex gap-2">
         <Button
           variant="outline"
@@ -28,7 +28,7 @@ export function CursorPagination({ nextCursor, count }: Props) {
           onClick={() => set({ cursor: undefined })}
         >
           <CaretLeftIcon />
-          First page
+          Primeira página
         </Button>
         <Button
           variant="outline"
@@ -36,7 +36,7 @@ export function CursorPagination({ nextCursor, count }: Props) {
           disabled={!nextCursor}
           onClick={() => set({ cursor: nextCursor ?? undefined })}
         >
-          Next
+          Próxima
           <CaretRightIcon />
         </Button>
       </div>

@@ -45,13 +45,13 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
     }).catch(() => null)
 
     if (!response) {
-      toast.error("Could not reach the server")
+      toast.error("Não foi possível conectar ao servidor")
       return
     }
 
     if (response.ok) {
       const { actor } = (await response.json()) as { actor: string }
-      toast.success(`Signed in as ${actor}`)
+      toast.success(`Conectado como ${actor}`)
       router.push(next ?? DASHBOARD_HOME)
       router.refresh()
       return
@@ -64,7 +64,7 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
 
     const { message } = (await response
       .json()
-      .catch(() => ({ message: "Sign-in failed. Try again." }))) as { message: string }
+      .catch(() => ({ message: "Falha ao entrar. Tente novamente." }))) as { message: string }
     if (response.status === 429) setRetryIn(parseRetrySeconds(message))
     setServerError(message)
   }
@@ -81,17 +81,17 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Sign in</h1>
+          <h1 className="text-2xl font-bold">Entrar</h1>
           <p className="text-sm text-balance text-muted-foreground">
-            Operations dashboard for the Zoho ↔ RouterOS bridge
+            Painel de operações da ponte Zoho ↔ RouterOS
           </p>
         </div>
 
         {reason === "expired" && (
           <Alert>
             <ClockCountdownIcon />
-            <AlertTitle>Your session ended</AlertTitle>
-            <AlertDescription>Sign in again to continue.</AlertDescription>
+            <AlertTitle>Sua sessão expirou</AlertTitle>
+            <AlertDescription>Entre novamente para continuar.</AlertDescription>
           </Alert>
         )}
 
@@ -100,7 +100,7 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+              <FieldLabel htmlFor={field.name}>Usuário</FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -119,7 +119,7 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+              <FieldLabel htmlFor={field.name}>Senha</FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -143,7 +143,7 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
         <Field>
           <Button type="submit" disabled={submitting || locked}>
             {submitting && <Spinner />}
-            {locked ? `Try again in ${retryIn}s` : "Sign in"}
+            {locked ? `Tente novamente em ${retryIn}s` : "Entrar"}
           </Button>
         </Field>
       </FieldGroup>
@@ -151,7 +151,7 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
   )
 }
 
-/** "Too many login attempts — try again in 300s" → 300. There is no Retry-After header. */
+/** "Muitas tentativas de login — tente novamente em 300s" → 300. There is no Retry-After header. */
 function parseRetrySeconds(message: string): number {
   const match = /(\d+)\s*s\b/.exec(message)
   return match ? Number(match[1]) : 0

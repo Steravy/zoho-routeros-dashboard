@@ -12,28 +12,28 @@ import type {
 import type { BadgeVariant } from "@/types/ui"
 
 export const WINDOW_LABELS: Record<TimeWindow, string> = {
-  "24h": "Last 24 hours",
-  "7d": "Last 7 days",
-  "30d": "Last 30 days",
-  "90d": "Last 90 days",
+  "24h": "Últimas 24 horas",
+  "7d": "Últimos 7 dias",
+  "30d": "Últimos 30 dias",
+  "90d": "Últimos 90 dias",
 }
 
 export const OUTCOME_LABELS: Record<ActionOutcome, string> = {
-  SUCCESS: "Success",
-  NOOP: "No-op",
-  IGNORED: "Ignored",
-  DEFERRED: "Deferred",
-  FAILURE: "Failure",
-  UNKNOWN: "Unknown",
+  SUCCESS: "Sucesso",
+  NOOP: "Sem alteração",
+  IGNORED: "Ignorado",
+  DEFERRED: "Adiado",
+  FAILURE: "Falha",
+  UNKNOWN: "Desconhecido",
 }
 
 export const OUTCOME_DESCRIPTIONS: Record<ActionOutcome, string> = {
-  SUCCESS: "A router change was attempted and worked",
-  NOOP: "Already in the desired state — nothing was written",
-  IGNORED: "A Zoho event nothing is mapped to; deliberately not acted on",
-  DEFERRED: "Router was down; queued for replay",
-  FAILURE: "Something went wrong — see the failure code",
-  UNKNOWN: "Written by an older build during a deploy window",
+  SUCCESS: "Uma alteração no roteador foi tentada e funcionou",
+  NOOP: "Já estava no estado desejado — nada foi gravado",
+  IGNORED: "Um evento do Zoho sem mapeamento; ignorado de propósito",
+  DEFERRED: "O roteador estava fora do ar; enfileirado para reprocessamento",
+  FAILURE: "Algo deu errado — veja o código de falha",
+  UNKNOWN: "Gravado por uma versão anterior durante um deploy",
 }
 
 export const OUTCOME_BADGE: Record<ActionOutcome, BadgeVariant> = {
@@ -46,87 +46,87 @@ export const OUTCOME_BADGE: Record<ActionOutcome, BadgeVariant> = {
 }
 
 export const FAILURE_CODE_LABELS: Record<FailureCode, string> = {
-  NO_USABLE_PHONE: "No usable phone",
-  ALL_CANDIDATES_CLAIMED: "All candidates claimed",
-  NO_SECRET_FOR_CANDIDATES: "No secret found",
-  PROBE_FAILED: "Probe failed",
-  DUPLICATE_SECRET: "Duplicate secret",
-  USER_ALREADY_EXISTS: "User already exists",
-  SECRET_NOT_FOUND: "Secret not found",
-  ROUTEROS_UNAVAILABLE: "Router unavailable",
-  REPLAY_GAVE_UP: "Replay gave up",
-  QUEUE_WRITE_FAILED: "Event lost",
-  INVALID_CUSTOM_FIELDS: "Invalid custom fields",
-  UNKNOWN: "Unknown",
+  NO_USABLE_PHONE: "Sem telefone válido",
+  ALL_CANDIDATES_CLAIMED: "Candidatos já vinculados",
+  NO_SECRET_FOR_CANDIDATES: "Nenhum secret encontrado",
+  PROBE_FAILED: "Sondagem falhou",
+  DUPLICATE_SECRET: "Secret duplicado",
+  USER_ALREADY_EXISTS: "Usuário já existe",
+  SECRET_NOT_FOUND: "Secret não encontrado",
+  ROUTEROS_UNAVAILABLE: "Roteador indisponível",
+  REPLAY_GAVE_UP: "Tentativas esgotadas",
+  QUEUE_WRITE_FAILED: "Evento perdido",
+  INVALID_CUSTOM_FIELDS: "Campos inválidos",
+  UNKNOWN: "Desconhecido",
 }
 
 export const FAILURE_CODE_DESCRIPTIONS: Record<FailureCode, string> = {
-  NO_USABLE_PHONE: "Zoho sent no phone number the bridge could use",
+  NO_USABLE_PHONE: "O Zoho não enviou nenhum telefone que a ponte pudesse usar",
   ALL_CANDIDATES_CLAIMED:
-    "Every matching secret belongs to another customer (twin contract)",
+    "Todo secret correspondente pertence a outro cliente (contrato gêmeo)",
   NO_SECRET_FOR_CANDIDATES:
-    "No secret exists under any name the bridge derived",
-  PROBE_FAILED: "The router query itself errored while searching",
+    "Não existe secret com nenhum dos nomes derivados pela ponte",
+  PROBE_FAILED: "A própria consulta ao roteador deu erro durante a busca",
   DUPLICATE_SECRET:
-    "A secret already exists under another of the customer's numbers",
-  USER_ALREADY_EXISTS: "Tried to create a secret that is already there",
-  SECRET_NOT_FOUND: "Tried to change a secret that does not exist",
+    "Já existe um secret com outro número do cliente",
+  USER_ALREADY_EXISTS: "Tentou criar um secret que já existe",
+  SECRET_NOT_FOUND: "Tentou alterar um secret que não existe",
   ROUTEROS_UNAVAILABLE:
-    "The router was unreachable and the event could not be deferred",
-  REPLAY_GAVE_UP: "Queued 50 attempts or 72 hours without succeeding",
+    "O roteador estava inacessível e o evento não pôde ser adiado",
+  REPLAY_GAVE_UP: "Ficou 50 tentativas ou 72 horas na fila sem sucesso",
   QUEUE_WRITE_FAILED:
-    "Router was down and the event could not be queued — this event is gone",
-  INVALID_CUSTOM_FIELDS: "Legacy webhook: the Zoho custom fields were unusable",
-  UNKNOWN: "Unclassified",
+    "O roteador estava fora do ar e o evento não pôde ser enfileirado — este evento se perdeu",
+  INVALID_CUSTOM_FIELDS: "Webhook legado: os campos personalizados do Zoho eram inutilizáveis",
+  UNKNOWN: "Não classificado",
 }
 
 export const ACTION_LABELS: Record<ActionType, string> = {
-  CREATE_USER: "Create user",
-  ENABLE_USER: "Enable user",
-  DISABLE_USER: "Disable user",
-  ACTIVATE_USER: "Activate",
-  BLOCK_USER: "Block",
-  DELETE_USER: "Delete user",
-  UPDATE_USER: "Update user",
-  KICK_SESSION: "Kick session",
-  IGNORED: "Ignored",
+  CREATE_USER: "Criar usuário",
+  ENABLE_USER: "Habilitar usuário",
+  DISABLE_USER: "Desabilitar usuário",
+  ACTIVATE_USER: "Ativar",
+  BLOCK_USER: "Bloquear",
+  DELETE_USER: "Excluir usuário",
+  UPDATE_USER: "Atualizar usuário",
+  KICK_SESSION: "Derrubar sessão",
+  IGNORED: "Ignorado",
 }
 
 export const SOURCE_LABELS: Record<TriggerSource, string> = {
-  ZOHO: "Zoho webhook",
-  MANUAL: "Admin API",
+  ZOHO: "Webhook do Zoho",
+  MANUAL: "API de administração",
 }
 
 export const PENDING_STATUS_LABELS: Record<PendingStatus, string> = {
-  PENDING: "Pending",
-  REPLAYED: "Replayed",
-  GAVE_UP: "Gave up",
+  PENDING: "Pendente",
+  REPLAYED: "Reprocessado",
+  GAVE_UP: "Desistiu",
 }
 
 export const OUTAGE_END_LABELS: Record<OutageEndReason, string> = {
-  RESTORED: "Restored",
-  ASSUMED_AT_RESTART: "Estimated at restart",
+  RESTORED: "Restabelecido",
+  ASSUMED_AT_RESTART: "Estimado no reinício",
 }
 
 export const DRIFT_BUCKET_LABELS: Record<DriftBucket, string> = {
-  orphans: "Orphans",
-  missing: "Missing",
-  ambiguous: "Ambiguous",
+  orphans: "Órfãos",
+  missing: "Ausentes",
+  ambiguous: "Ambíguos",
 }
 
 export const DRIFT_BUCKET_DESCRIPTIONS: Record<DriftBucket, string> = {
-  orphans: "Secrets on the router that no mapping claims",
-  missing: "Mappings that point at a secret the router no longer has",
-  ambiguous: "One username claimed by more than one Zoho id (twin contracts)",
+  orphans: "Secrets no roteador que nenhum mapeamento reivindica",
+  missing: "Mapeamentos que apontam para um secret que o roteador não tem mais",
+  ambiguous: "Um username reivindicado por mais de um id do Zoho (contratos gêmeos)",
 }
 
 export const SUGGESTION_SOURCE_LABELS: Record<SuggestionSource, string> = {
-  ladder: "Probed name",
-  "digit-match": "Digit match",
+  ladder: "Nome sondado",
+  "digit-match": "Dígitos iguais",
 }
 
 export const SUGGESTION_SOURCE_DESCRIPTIONS: Record<SuggestionSource, string> = {
-  ladder: "The bridge probed this exact name",
+  ladder: "A ponte sondou exatamente este nome",
   "digit-match":
-    "Contains the phone digits but was not on the ladder — the name on the router likely differs from Zoho",
+    "Contém os dígitos do telefone mas não estava na escada — o nome no roteador provavelmente difere do Zoho",
 }

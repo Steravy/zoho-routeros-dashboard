@@ -6,8 +6,8 @@ export default function HealthLoading() {
   return (
     <>
       <PageHeader
-        title="Health & config"
-        description="Whether the bridge is up, and which operational flags are in force right now."
+        title="Status e config"
+        description="Se a ponte está no ar e quais flags operacionais estão em vigor agora."
         actions={<Skeleton className="h-7 w-24" />}
       />
       <div className="grid gap-4 lg:grid-cols-2">

@@ -20,8 +20,8 @@ export async function DriftSection({ query }: Props) {
   if (!data) {
     return (
       <UnavailableState
-        title="No drift data available"
-        reason={drift.unavailableReason ?? "The router has not answered yet."}
+        title="Sem dados de divergência"
+        reason={drift.unavailableReason ?? "O roteador ainda não respondeu."}
       />
     )
   }
@@ -31,10 +31,10 @@ export async function DriftSection({ query }: Props) {
       <StaleBanner read={drift} />
       <p className="text-sm text-muted-foreground">
         <span className="font-medium text-foreground">{formatCount(data.totals.secrets)}</span>{" "}
-        secrets on the router,{" "}
+        secrets no roteador,{" "}
         <span className="font-medium text-foreground">{formatCount(data.totals.mappings)}</span>{" "}
-        mappings stored. Mappings are written lazily, so a large orphan count early on
-        means a sparse table, not real drift.
+        mapeamentos salvos. Os mapeamentos são gravados sob demanda, então muitos órfãos
+        no início significam uma tabela incompleta, não uma divergência real.
       </p>
       <div className="space-y-1">
         <DriftTabs value={data.bucket} counts={data.counts} />

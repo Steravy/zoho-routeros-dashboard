@@ -23,17 +23,17 @@ export default async function NeedsHumanPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Needs a human"
-        description="Customers the bridge could not place on the router. Each row opens what it knew and which secrets could be theirs."
+        title="Ação manual"
+        description="Clientes que a ponte não conseguiu colocar no roteador. Cada linha abre o que ela sabia e quais secrets podem ser deles."
         actions={<WindowSelect value={window} />}
       />
 
       <Alert>
         <HandPointingIcon />
-        <AlertTitle>There is no link button</AlertTitle>
+        <AlertTitle>Não existe botão de vínculo</AlertTitle>
         <AlertDescription>
-          The mapping is fixed by hand outside this tool. These screens exist to give
-          you everything needed to decide.
+          O mapeamento é corrigido manualmente fora desta ferramenta. Estas telas existem
+          para dar tudo o que você precisa para decidir.
         </AlertDescription>
       </Alert>
 
@@ -45,8 +45,8 @@ export default async function NeedsHumanPage({ searchParams }: Props) {
       <Suspense fallback={<TableSkeleton columns={6} />}>
         <FailuresTable
           query={{ window, failureCode: code, cursor }}
-          emptyTitle="Nobody needs a human right now"
-          emptyDescription="No customer failed with this code in the selected window."
+          emptyTitle="Nenhuma ação manual pendente"
+          emptyDescription="Nenhum cliente falhou com este código no período selecionado."
         />
       </Suspense>
     </>

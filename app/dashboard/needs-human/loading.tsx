@@ -6,8 +6,8 @@ export default function NeedsHumanLoading() {
   return (
     <>
       <PageHeader
-        title="Needs a human"
-        description="Customers the bridge could not place on the router. Each row opens what it knew and which secrets could be theirs."
+        title="Ação manual"
+        description="Clientes que a ponte não conseguiu colocar no roteador. Cada linha abre o que ela sabia e quais secrets podem ser deles."
         actions={<Skeleton className="h-7 w-44" />}
       />
       <Skeleton className="h-16 w-full" />

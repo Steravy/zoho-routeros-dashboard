@@ -7,7 +7,7 @@ import { CopyIcon } from "@phosphor-icons/react/ssr"
 
 interface Props {
   value: string
-  /** What is being copied, for the tooltip and toast: "username", "Zoho id". */
+  /** What is being copied, for the tooltip and toast: "username", "id do Zoho". */
   label: string
 }
 
@@ -16,9 +16,9 @@ export function CopyButton({ value, label }: Props) {
   async function copy() {
     try {
       await navigator.clipboard.writeText(value)
-      toast.success(`Copied ${label}`)
+      toast.success(`Copiado: ${label}`)
     } catch {
-      toast.error(`Could not copy ${label}`)
+      toast.error(`Não foi possível copiar: ${label}`)
     }
   }
 
@@ -29,7 +29,7 @@ export function CopyButton({ value, label }: Props) {
       className="size-6 text-muted-foreground"
       onClick={copy}
       aria-label={`Copy ${label}`}
-      title={`Copy ${label}`}
+      title={`Copiar ${label}`}
     >
       <CopyIcon />
     </Button>

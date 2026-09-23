@@ -45,10 +45,10 @@ export function NavUser({ actor }: Props) {
       () => null
     )
     if (!response?.ok) {
-      toast.error("Could not log out. Try again.")
+      toast.error("Não foi possível sair. Tente novamente.")
       return
     }
-    toast.success("Logged out")
+    toast.success("Sessão encerrada")
     router.push("/login")
     router.refresh()
   }
@@ -67,7 +67,7 @@ export function NavUser({ actor }: Props) {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{actor}</span>
-                <span className="truncate text-xs">Operator</span>
+                <span className="truncate text-xs">Operador</span>
               </div>
               <CaretUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -85,34 +85,34 @@ export function NavUser({ actor }: Props) {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{actor}</span>
-                  <span className="truncate text-xs">Operator</span>
+                  <span className="truncate text-xs">Operador</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuLabel className="text-xs text-muted-foreground">
-                Theme
+                Tema
               </DropdownMenuLabel>
               <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
                 <DropdownMenuRadioItem value="light">
                   <SunIcon />
-                  Light
+                  Claro
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="dark">
                   <MoonIcon />
-                  Dark
+                  Escuro
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="system">
                   <MonitorIcon />
-                  System
+                  Sistema
                 </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={logout}>
               <SignOutIcon />
-              Log out
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -17,10 +17,10 @@ export async function ProfileBreakdown() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Secrets by profile</CardTitle>
+        <CardTitle>Secrets por perfil</CardTitle>
         <CardDescription>
-          {formatCount(data.byProfile.length)} profiles. The blocked profile,{" "}
-          <code className="font-mono">{config.blockedProfile}</code>, is highlighted.
+          {formatCount(data.byProfile.length)} perfis. O perfil bloqueado,{" "}
+          <code className="font-mono">{config.blockedProfile}</code>, está destacado.
         </CardDescription>
       </CardHeader>
       <CardContent>

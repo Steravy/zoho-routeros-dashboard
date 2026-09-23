@@ -18,36 +18,36 @@ interface Props {
 }
 
 const FROM_LABELS: Record<SuggestionBasis["from"], string> = {
-  "last-failed-event": "last failed event",
-  "queued-event": "queued event",
+  "last-failed-event": "último evento com falha",
+  "queued-event": "evento enfileirado",
 }
 
-/** What the bridge had to work with when it tried to place this customer. */
+/** O que a ponte tinha to work with when it tried to place this customer. */
 export function SuggestionsBasis({ basis, currentMapping, failureCode }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>What the bridge had</CardTitle>
-        <CardDescription>The payload it derived usernames from, and how the attempt ended.</CardDescription>
+        <CardTitle>O que a ponte tinha</CardTitle>
+        <CardDescription>O payload do qual ela derivou os usernames e como a tentativa terminou.</CardDescription>
       </CardHeader>
       <CardContent>
         <KeyValueList
           items={[
-            { label: "Failure", value: <FailureCodeBadge code={failureCode} /> },
+            { label: "Falha", value: <FailureCodeBadge code={failureCode} /> },
             {
-              label: "Current mapping",
+              label: "Mapeamento atual",
               value: currentMapping ? (
                 <code className="font-mono text-xs">{currentMapping}</code>
               ) : (
-                <span className="text-muted-foreground">None</span>
+                <span className="text-muted-foreground">Nenhum</span>
               ),
             },
             {
-              label: "First name",
-              value: basis?.firstName ?? <span className="text-muted-foreground">No stored payload</span>,
+              label: "Primeiro nome",
+              value: basis?.firstName ?? <span className="text-muted-foreground">Nenhum payload salvo</span>,
             },
             {
-              label: "Phones",
+              label: "Telefones",
               value: basis ? (
                 <span className="flex flex-wrap gap-1">
                   {basis.phones.map((phone) => (
@@ -61,10 +61,10 @@ export function SuggestionsBasis({ basis, currentMapping, failureCode }: Props) 
               ),
             },
             {
-              label: "Taken from",
+              label: "Obtido de",
               value: basis ? (
                 <>
-                  the {FROM_LABELS[basis.from]}, <Time iso={basis.at} format="relative" />
+                  {FROM_LABELS[basis.from]}, <Time iso={basis.at} format="relative" />
                 </>
               ) : (
                 <span className="text-muted-foreground">—</span>

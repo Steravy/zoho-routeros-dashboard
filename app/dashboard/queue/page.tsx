@@ -14,8 +14,8 @@ export default async function QueuePage() {
   return (
     <>
       <PageHeader
-        title="Replay queue"
-        description="Events that arrived while the router was unreachable, replayed when the link returns."
+        title="Fila"
+        description="Eventos que chegaram enquanto o roteador estava inacessível, reprocessados quando a conexão volta."
         actions={<AutoRefresh intervalMs={live ? 30_000 : undefined} />}
       />
       <QueueStats byStatus={pending.byStatus} />

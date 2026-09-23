@@ -23,7 +23,7 @@ export class ApiError extends Error {
   readonly messages: string[]
 
   constructor(status: number, messages: string[], options?: ErrorOptions) {
-    super(messages[0] ?? `Request failed (${status})`, options)
+    super(messages[0] ?? `Falha na requisição (${status})`, options)
     this.name = "ApiError"
     this.status = status
     this.messages = messages
@@ -57,7 +57,7 @@ export async function opsFetch<T>(
       cache: "no-store",
     })
   } catch (cause) {
-    throw new ApiError(0, ["Could not reach the API"], { cause })
+    throw new ApiError(0, ["Não foi possível conectar à API"], { cause })
   }
 
   if (response.ok) return (await response.json()) as T

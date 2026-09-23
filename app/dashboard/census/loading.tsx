@@ -7,8 +7,8 @@ export default function CensusLoading() {
   return (
     <>
       <PageHeader
-        title="Census"
-        description="How many customers are on the router, and how many are cut off. Live from RouterOS."
+        title="Censo"
+        description="Clientes no roteador e quantos estão cortados. Ao vivo do RouterOS."
         actions={<Skeleton className="h-7 w-24" />}
       />
       <StatGridSkeleton count={6} className="grid gap-4 grid-cols-2 lg:grid-cols-3" />

@@ -39,13 +39,13 @@ export default async function CustomerPage({ params, searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title={customer.identity.name ?? `Customer ${customer.zohoCustomerId}`}
-        description={`Zoho id ${customer.zohoCustomerId}`}
+        title={customer.identity.name ?? `Cliente ${customer.zohoCustomerId}`}
+        description={`Id do Zoho ${customer.zohoCustomerId}`}
         actions={
           <Button asChild variant="outline">
             <Link href={`/dashboard/customers/${encodeURIComponent(customer.zohoCustomerId)}/suggestions`}>
               <UserFocusIcon />
-              Link suggestions
+              Sugestões
             </Link>
           </Button>
         }

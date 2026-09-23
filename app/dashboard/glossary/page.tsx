@@ -9,8 +9,8 @@ export default async function GlossaryPage() {
   return (
     <>
       <PageHeader
-        title="Glossary"
-        description="The words you will meet in field names, badges and error messages."
+        title="Glossário"
+        description="Os termos que você vai encontrar em nomes de campos, badges e mensagens de erro."
       />
       <Card>
         <CardContent>

@@ -8,8 +8,8 @@ export default function OverviewLoading() {
   return (
     <>
       <PageHeader
-        title="Overview"
-        description="Is the bridge healthy? Outcome mix, queue depth and router state."
+        title="Visão geral"
+        description="A ponte está saudável? Resultados, fila e estado do roteador."
         actions={<Skeleton className="h-7 w-56" />}
       />
       <Skeleton className="h-6 w-80" />

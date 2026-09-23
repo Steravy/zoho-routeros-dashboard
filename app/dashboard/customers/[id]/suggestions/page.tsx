@@ -35,13 +35,13 @@ export default async function SuggestionsPage({ params }: Props) {
   return (
     <>
       <PageHeader
-        title="Which secret is this customer's?"
-        description={`Zoho id ${result.zohoCustomerId}`}
+        title="Qual secret é deste cliente?"
+        description={`Id do Zoho ${result.zohoCustomerId}`}
         actions={
           <Button asChild variant="outline">
             <Link href={customerHref}>
               <ArrowLeftIcon />
-              Customer 360
+              Cliente 360
             </Link>
           </Button>
         }
@@ -49,10 +49,10 @@ export default async function SuggestionsPage({ params }: Props) {
 
       <Alert>
         <HandPointingIcon />
-        <AlertTitle>Nothing here writes a mapping</AlertTitle>
+        <AlertTitle>Nada aqui grava um mapeamento</AlertTitle>
         <AlertDescription>
-          There is no link endpoint. Decide from what is below, then fix the mapping by
-          hand outside this tool.
+          Não existe endpoint de vínculo. Decida com base no que está abaixo e corrija o
+          mapeamento manualmente fora desta ferramenta.
         </AlertDescription>
       </Alert>
 
@@ -70,8 +70,8 @@ export default async function SuggestionsPage({ params }: Props) {
       ) : (
         // Not necessarily "router down": also "no stored payload to derive names from".
         <UnavailableState
-          title="The router could not be consulted"
-          reason={result.router.unavailableReason ?? "The router did not answer."}
+          title="Não foi possível consultar o roteador"
+          reason={result.router.unavailableReason ?? "O roteador não respondeu."}
         />
       )}
     </>

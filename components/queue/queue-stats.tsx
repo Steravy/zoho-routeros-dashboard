@@ -12,21 +12,21 @@ export function QueueStats({ byStatus }: Props) {
   return (
     <div className="grid auto-rows-min gap-4 md:grid-cols-3">
       <StatCard
-        label="Pending now"
+        label="Pendentes agora"
         value={formatCount(byStatus.PENDING)}
-        hint="Events waiting for the router to come back"
-        action={<Badge variant={byStatus.PENDING ? "default" : "secondary"}>live</Badge>}
+        hint="Eventos aguardando o roteador voltar"
+        action={<Badge variant={byStatus.PENDING ? "default" : "secondary"}>ao vivo</Badge>}
       />
       <StatCard
-        label="Replayed"
+        label="Reprocessados"
         value={formatCount(byStatus.REPLAYED)}
-        hint="Applied on a later attempt — all time"
+        hint="Aplicados em uma tentativa posterior — desde sempre"
       />
       <StatCard
-        label="Gave up"
+        label="Desistidos"
         value={formatCount(byStatus.GAVE_UP)}
-        hint="Abandoned after 50 attempts or 72 hours — each is an audited failure"
-        action={byStatus.GAVE_UP > 0 && <Badge variant="destructive">needs attention</Badge>}
+        hint="Abandonados após 50 tentativas ou 72 horas — cada um é uma falha auditada"
+        action={byStatus.GAVE_UP > 0 && <Badge variant="destructive">precisa de atenção</Badge>}
       />
     </div>
   )

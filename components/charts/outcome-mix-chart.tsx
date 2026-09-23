@@ -22,8 +22,8 @@ const ROW_HEIGHT = 36
 // Emphasis form: one de-emphasis hue for every outcome, the status token only where
 // the bar *means* something went wrong. Fixed enum order so positions never shuffle.
 const config = {
-  count: { label: "Events", color: "var(--chart-2)" },
-  failure: { label: "Failures", color: "var(--destructive)" },
+  count: { label: "Eventos", color: "var(--chart-2)" },
+  failure: { label: "Falhas", color: "var(--destructive)" },
 } satisfies ChartConfig
 
 export function OutcomeMixChart({ byOutcome }: Props) {

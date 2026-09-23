@@ -16,8 +16,8 @@ export async function CensusStats() {
   if (!data) {
     return (
       <UnavailableState
-        title="No census available"
-        reason={census.unavailableReason ?? "The router has not answered yet."}
+        title="Nenhum censo disponível"
+        reason={census.unavailableReason ?? "O roteador ainda não respondeu."}
       />
     )
   }
@@ -29,38 +29,38 @@ export async function CensusStats() {
         <StatCard
           label="Secrets"
           value={formatCount(data.secrets)}
-          hint="PPPoE credentials on the router — one per customer line"
+          hint="Credenciais PPPoE no roteador — uma por linha de cliente"
         />
         <StatCard
-          label="Active"
+          label="Ativos"
           value={formatCount(data.active)}
-          hint="Secrets not on the blocked profile (ignores the disabled flag)"
+          hint="Secrets fora do perfil bloqueado (ignora a flag de desabilitado)"
         />
         <StatCard
-          label="Blocked"
+          label="Bloqueados"
           value={formatCount(data.blocked)}
           hint={
             <>
-              On <code className="font-mono">{config.blockedProfile}</code>
-              {" — suspended for non-payment, still connecting at throttled speed"}
+              Em <code className="font-mono">{config.blockedProfile}</code>
+              {" — suspensos por falta de pagamento, ainda conectando com velocidade reduzida"}
             </>
           }
         />
         <StatCard
-          label="Disabled"
+          label="Desabilitados"
           value={formatCount(data.disabled)}
-          hint="RouterOS flag set — new customers who have not paid yet. Not suspension."
+          hint="Flag do RouterOS ativa — clientes novos que ainda não pagaram. Não é suspensão."
         />
         <StatCard
           label="Online"
           value={formatCount(data.online)}
-          hint="Distinct customers with a live session right now"
+          hint="Clientes distintos com sessão ativa agora"
         />
         <StatCard
-          label="Blocked and online"
+          label="Bloqueados e online"
           value={formatCount(data.blockedAndOnline)}
-          action={<Badge variant="secondary">expected</Badge>}
-          hint="Blocked customers reconnect into the throttled profile — this number being large is the system working"
+          action={<Badge variant="secondary">esperado</Badge>}
+          hint="Clientes bloqueados reconectam no perfil com velocidade reduzida — um número alto aqui significa que o sistema está funcionando"
         />
       </div>
     </div>

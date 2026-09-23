@@ -23,13 +23,13 @@ export default function DashboardError({ reset }: Props) {
         <EmptyMedia variant="icon">
           <WarningIcon />
         </EmptyMedia>
-        <EmptyTitle>Couldn&apos;t load this page</EmptyTitle>
+        <EmptyTitle>Não foi possível carregar esta página</EmptyTitle>
         <EmptyDescription>
-          The API didn&apos;t answer. Check that it is running, then try again.
+          A API não respondeu. Verifique se ela está rodando e tente novamente.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={reset}>Try again</Button>
+        <Button onClick={reset}>Tentar novamente</Button>
       </EmptyContent>
     </Empty>
   )

@@ -23,10 +23,10 @@ export async function OutcomeMix({ window }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Outcome mix</CardTitle>
+        <CardTitle>Resultados</CardTitle>
         <CardDescription>
-          {formatCount(events.total)} events, {WINDOW_LABELS[window].toLowerCase()}.
-          Failures highlighted.
+          {formatCount(events.total)} eventos, {WINDOW_LABELS[window].toLowerCase()}.
+          Falhas destacadas.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -35,8 +35,8 @@ export async function OutcomeMix({ window }: Props) {
         ) : (
           <EmptyState
             icon={<MoonStarsIcon />}
-            title="No events in this window"
-            description="Quiet day — nothing came through the bridge."
+            title="Nenhum evento neste período"
+            description="Dia tranquilo — nada passou pela ponte."
           />
         )}
       </CardContent>

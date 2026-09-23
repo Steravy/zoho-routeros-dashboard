@@ -47,7 +47,7 @@ export function FailuresFilters({ value }: Props) {
         <Input
           value={q}
           onChange={(event) => setQ(event.target.value)}
-          placeholder="Name, username or Zoho id"
+          placeholder="Nome, username ou id do Zoho"
           aria-label="Search failures"
           className="pl-8"
         />
@@ -61,7 +61,7 @@ export function FailuresFilters({ value }: Props) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL}>All failure codes</SelectItem>
+          <SelectItem value={ALL}>Todos os códigos de falha</SelectItem>
           {FAILURE_CODES.map((code) => (
             <SelectItem key={code} value={code}>
               {FAILURE_CODE_LABELS[code]}
@@ -78,7 +78,7 @@ export function FailuresFilters({ value }: Props) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL}>All actions</SelectItem>
+          <SelectItem value={ALL}>Todas as ações</SelectItem>
           {ACTIONS.map((action) => (
             <SelectItem key={action} value={action}>
               {ACTION_LABELS[action]}
@@ -95,7 +95,7 @@ export function FailuresFilters({ value }: Props) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL}>All sources</SelectItem>
+          <SelectItem value={ALL}>Todas as origens</SelectItem>
           {SOURCES.map((source) => (
             <SelectItem key={source} value={source}>
               {SOURCE_LABELS[source]}
@@ -105,7 +105,7 @@ export function FailuresFilters({ value }: Props) {
       </Select>
 
       <Button type="submit" variant="outline" size="sm">
-        Search
+        Buscar
       </Button>
       {hasFilters && (
         <Button
@@ -117,7 +117,7 @@ export function FailuresFilters({ value }: Props) {
           }
         >
           <XIcon />
-          Clear
+          Limpar
         </Button>
       )}
     </form>

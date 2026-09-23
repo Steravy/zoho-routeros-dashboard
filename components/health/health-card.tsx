@@ -25,9 +25,9 @@ export async function HealthCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Health</CardTitle>
+        <CardTitle>Saúde</CardTitle>
         <CardDescription>
-          The unauthenticated <code className="font-mono">/health</code> probe.
+          A sonda sem autenticação <code className="font-mono">/health</code>.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -43,21 +43,21 @@ export async function HealthCard() {
                 ),
               },
               {
-                label: "RouterOS link",
+                label: "Conexão RouterOS",
                 value: (
                   <Badge variant={health.routeros === "connected" ? "secondary" : "destructive"}>
                     {health.routeros}
                   </Badge>
                 ),
               },
-              { label: "Pending replays", value: formatCount(health.pendingEvents) },
+              { label: "Na fila", value: formatCount(health.pendingEvents) },
             ]}
           />
         ) : (
           <Alert variant="destructive">
             <PlugsIcon />
-            <AlertTitle>API unreachable</AlertTitle>
-            <AlertDescription>The bridge did not answer.</AlertDescription>
+            <AlertTitle>API inacessível</AlertTitle>
+            <AlertDescription>A ponte não respondeu.</AlertDescription>
           </Alert>
         )}
       </CardContent>

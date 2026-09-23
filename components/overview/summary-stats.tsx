@@ -19,67 +19,67 @@ export async function SummaryStats({ window }: Props) {
   return (
     <div className="grid auto-rows-min gap-4 md:grid-cols-3">
       <StatCard
-        label="Events"
+        label="Eventos"
         value={formatCount(total)}
         action={
           <Badge variant={byOutcome.FAILURE ? "destructive" : "secondary"}>
-            {formatCount(byOutcome.FAILURE)} failed
+            {formatCount(byOutcome.FAILURE)} com falha
           </Badge>
         }
         hint={
           total === 0 ? (
-            "No events in this window"
+            "Nenhum evento neste período"
           ) : (
             <>
-              Effective success rate{" "}
+              Taxa de sucesso efetiva{" "}
               <span className="font-medium text-foreground">
                 {formatRate(summary.effectiveSuccessRate)}
               </span>
-              {summary.effectiveSuccessRate === null && " — nothing was decided"}
+              {summary.effectiveSuccessRate === null && " — nada foi decidido"}
             </>
           )
         }
       />
 
       <StatCard
-        label="Replay queue"
+        label="Fila"
         value={formatCount(pending)}
         action={
           <Badge variant="outline">
-            {formatCount(summary.queue.byStatus.REPLAYED)} replayed ·{" "}
-            {formatCount(summary.queue.byStatus.GAVE_UP)} gave up
+            {formatCount(summary.queue.byStatus.REPLAYED)} reprocessados ·{" "}
+            {formatCount(summary.queue.byStatus.GAVE_UP)} desistidos
           </Badge>
         }
         hint={
           pending > 0 ? (
             <>
-              Oldest waiting since{" "}
+              Mais antigo desde{" "}
               <Time iso={summary.queue.oldestPendingAt} format="relative" />
             </>
           ) : (
-            "Nothing waiting — the normal state"
+            "Nada aguardando — o estado normal"
           )
         }
       />
 
       <StatCard
-        label="Router"
+        label="Roteador"
         value={
-          router.connected ? "Connected" : <span className="text-destructive">Down</span>
+          router.connected ? "Conectado" : <span className="text-destructive">Fora do ar</span>
         }
         action={
           <Badge variant={router.outages ? "outline" : "secondary"}>
-            {formatCount(router.outages)} outages
+            {formatCount(router.outages)} quedas
           </Badge>
         }
         hint={
           router.currentOutageSince ? (
             <>
-              Unreachable since{" "}
+              Inacessível desde{" "}
               <Time iso={router.currentOutageSince} format="relative" />
             </>
           ) : (
-            <>{formatDuration(router.downtimeSeconds)} of downtime in this window</>
+            <>{formatDuration(router.downtimeSeconds)} fora do ar neste período</>
           )
         }
       />

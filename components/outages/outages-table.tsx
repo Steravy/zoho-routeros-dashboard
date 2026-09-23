@@ -26,8 +26,8 @@ export async function OutagesTable({ window }: Props) {
     return (
       <EmptyState
         icon={<CheckCircleIcon />}
-        title="No outages in this window"
-        description="The router link stayed up the whole time."
+        title="Nenhuma queda neste período"
+        description="A conexão com o roteador ficou no ar o tempo todo."
       />
     )
   }
@@ -37,11 +37,11 @@ export async function OutagesTable({ window }: Props) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Started</TableHead>
-            <TableHead>Ended</TableHead>
-            <TableHead className="text-right">Duration</TableHead>
-            <TableHead className="hidden md:table-cell">Reason</TableHead>
-            <TableHead className="hidden text-right lg:table-cell">Reconnects</TableHead>
+            <TableHead>Início</TableHead>
+            <TableHead>Fim</TableHead>
+            <TableHead className="text-right">Duração</TableHead>
+            <TableHead className="hidden md:table-cell">Motivo</TableHead>
+            <TableHead className="hidden text-right lg:table-cell">Reconexões</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,13 +52,13 @@ export async function OutagesTable({ window }: Props) {
               </TableCell>
               <TableCell className="whitespace-nowrap">
                 {outage.open ? (
-                  <Badge variant="destructive">still down</Badge>
+                  <Badge variant="destructive">ainda fora do ar</Badge>
                 ) : (
                   <span className="inline-flex items-center gap-2">
                     <Time iso={outage.endedAt} />
                     {outage.endedBy === "ASSUMED_AT_RESTART" && (
-                      <Badge variant="outline" title="The link was already back when the process restarted; the end time is an estimate.">
-                        estimated
+                      <Badge variant="outline" title="A conexão já tinha voltado quando o processo reiniciou; o horário de fim é uma estimativa.">
+                        estimado
                       </Badge>
                     )}
                   </span>

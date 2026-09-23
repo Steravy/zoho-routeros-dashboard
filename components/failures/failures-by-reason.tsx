@@ -25,17 +25,17 @@ export async function FailuresByReason({ window }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>By reason</CardTitle>
+        <CardTitle>Por motivo</CardTitle>
         <CardDescription>
-          {formatCount(total)} failures, {WINDOW_LABELS[window].toLowerCase()}.
+          {formatCount(total)} falhas, {WINDOW_LABELS[window].toLowerCase()}.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {reasons.length === 0 ? (
           <EmptyState
             icon={<ConfettiIcon />}
-            title="No failures in this window"
-            description="Genuinely good news — nothing needed a human."
+            title="Nenhuma falha neste período"
+            description="Boa notícia de verdade — nada precisou de ação manual."
           />
         ) : (
           <FailuresByReasonChart reasons={reasons} />
@@ -43,8 +43,8 @@ export async function FailuresByReason({ window }: Props) {
       </CardContent>
       {reasons.length > 0 && (
         <CardFooter className="text-sm text-muted-foreground">
-          Fourteen failures from one customer is a different problem from fourteen
-          customers failing once — read both bars.
+          Catorze falhas de um cliente são um problema diferente de catorze clientes
+          falhando uma vez — leia as duas barras.
         </CardFooter>
       )}
     </Card>

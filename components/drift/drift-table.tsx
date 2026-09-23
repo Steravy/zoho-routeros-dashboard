@@ -26,8 +26,8 @@ export function DriftTable({ bucket, items }: Props) {
     return (
       <EmptyState
         icon={<CheckCircleIcon />}
-        title={`No ${DRIFT_BUCKET_LABELS[bucket].toLowerCase()}`}
-        description="The router and the mapping table agree here."
+        title={`Sem ${DRIFT_BUCKET_LABELS[bucket].toLowerCase()}`}
+        description="O roteador e a tabela de mapeamentos concordam aqui."
       />
     )
   }
@@ -42,12 +42,12 @@ export function DriftTable({ bucket, items }: Props) {
             <TableHead>Username</TableHead>
             {orphans ? (
               <>
-                <TableHead>Profile</TableHead>
-                <TableHead>Disabled</TableHead>
-                <TableHead className="hidden md:table-cell">Comment</TableHead>
+                <TableHead>Perfil</TableHead>
+                <TableHead>Desabilitado</TableHead>
+                <TableHead className="hidden md:table-cell">Comentário</TableHead>
               </>
             ) : (
-              <TableHead>Claimed by Zoho ids</TableHead>
+              <TableHead>Ids do Zoho</TableHead>
             )}
           </TableRow>
         </TableHeader>
@@ -65,9 +65,9 @@ export function DriftTable({ bucket, items }: Props) {
                   <TableCell className="font-mono text-xs">{item.profile ?? "—"}</TableCell>
                   <TableCell>
                     {item.disabled ? (
-                      <Badge variant="outline">disabled</Badge>
+                      <Badge variant="outline">desabilitado</Badge>
                     ) : (
-                      <span className="text-muted-foreground">no</span>
+                      <span className="text-muted-foreground">não</span>
                     )}
                   </TableCell>
                   <TableCell className="hidden max-w-sm truncate text-muted-foreground md:table-cell">

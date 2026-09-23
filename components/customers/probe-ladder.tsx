@@ -27,19 +27,19 @@ export function ProbeLadder({ tried }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Names the bridge probed</CardTitle>
+        <CardTitle>Nomes sondados</CardTitle>
         <CardDetail count={tried.length} />
       </CardHeader>
       <CardContent>
         {tried.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No names could be derived.</p>
+          <p className="text-sm text-muted-foreground">Nenhum nome pôde ser derivado.</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Username</TableHead>
-                <TableHead>On router</TableHead>
-                <TableHead>Claimed by</TableHead>
+                <TableHead>No roteador</TableHead>
+                <TableHead>Vinculado a</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -48,7 +48,7 @@ export function ProbeLadder({ tried }: Props) {
                   <TableCell className="font-mono text-xs">{probe.username}</TableCell>
                   <TableCell>
                     <Badge variant={probe.exists ? "secondary" : "outline"}>
-                      {probe.exists ? "exists" : "not found"}
+                      {probe.exists ? "existe" : "não encontrado"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -81,9 +81,9 @@ export function ProbeLadder({ tried }: Props) {
 function CardDetail({ count }: { count: number }) {
   return (
     <CardDescription>
-      Lowercase first word of the first name + the 7 local digits of every phone, then
-      the same with <code className="font-mono">0</code> and{" "}
-      <code className="font-mono">00</code> appended. {count} names tried.
+      Primeira palavra do primeiro nome em minúsculas + os 7 dígitos locais de cada
+      telefone, depois o mesmo com <code className="font-mono">0</code> e{" "}
+      <code className="font-mono">00</code> no final. {count} nomes tentados.
     </CardDescription>
   )
 }

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const parsed = loginSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
-      { message: "Enter your username and password" },
+      { message: "Informe seu usuário e senha" },
       { status: 400 }
     )
   }
@@ -34,15 +34,23 @@ export async function POST(request: Request) {
 function publicMessage(error: ApiError): string {
   switch (error.status) {
     case 401:
-      return "Wrong username or password"
+      return "Usuário ou senha incorretos"
     case 429:
-      // Carries the wait: "Too many login attempts — try again in 300s"
-      return error.message
+      // The backend's text carries the wait: "Too many login attempts — try again in 300s"
+      return tooManyAttempts(error.message)
     case 503:
-      return "The dashboard is switched off"
+      return "O painel está desativado"
     case 0:
-      return "Could not reach the API"
+      return "Não foi possível conectar à API"
     default:
-      return "Sign-in failed. Try again."
+      return "Falha ao entrar. Tente novamente."
   }
+}
+
+/** Keeps the "<n>s" the login form counts down from. */
+function tooManyAttempts(message: string): string {
+  const seconds = /(\d+)\s*s\b/.exec(message)?.[1]
+  return seconds
+    ? `Muitas tentativas de login — tente novamente em ${seconds}s`
+    : "Muitas tentativas de login — tente novamente mais tarde"
 }

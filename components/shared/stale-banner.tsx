@@ -17,11 +17,11 @@ export function StaleBanner({ read }: Props) {
   return (
     <Alert>
       <CloudSlashIcon />
-      <AlertTitle>Router unreachable — showing a remembered copy</AlertTitle>
+      <AlertTitle>Roteador inacessível — mostrando uma cópia salva</AlertTitle>
       <AlertDescription>
-        Last fresh read {formatDateTime(read.fetchedAt)}
-        {read.ageSeconds !== null && ` (${formatDuration(read.ageSeconds)} ago)`}.
-        Counts below may have moved since.
+        Última leitura atualizada em {formatDateTime(read.fetchedAt)}
+        {read.ageSeconds !== null && ` (há ${formatDuration(read.ageSeconds)})`}.
+        Os números abaixo podem ter mudado desde então.
       </AlertDescription>
     </Alert>
   )

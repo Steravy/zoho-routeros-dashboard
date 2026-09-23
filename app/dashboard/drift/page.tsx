@@ -20,8 +20,8 @@ export default async function DriftPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Drift"
-        description="Where the router and the mapping table disagree. Reads the whole router — refresh on demand."
+        title="Divergência"
+        description="Onde o roteador e a tabela de mapeamentos discordam. Lê o roteador inteiro — atualize sob demanda."
         actions={<AutoRefresh />}
       />
       <Suspense

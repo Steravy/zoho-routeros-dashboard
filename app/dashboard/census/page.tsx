@@ -14,8 +14,8 @@ export default async function CensusPage() {
   return (
     <>
       <PageHeader
-        title="Census"
-        description="How many customers are on the router, and how many are cut off. Live from RouterOS."
+        title="Censo"
+        description="Clientes no roteador e quantos estão cortados. Ao vivo do RouterOS."
         actions={<AutoRefresh />}
       />
       <Suspense

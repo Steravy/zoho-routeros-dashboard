@@ -26,14 +26,14 @@ export function RouterStateCard({ read }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Router state</CardTitle>
+        <CardTitle>Estado no roteador</CardTitle>
         <CardDescription>
           {read.available ? (
             <>
-              Live read, <Time iso={read.fetchedAt} format="relative" />
+              Leitura ao vivo, <Time iso={read.fetchedAt} format="relative" />
             </>
           ) : (
-            "Could not be read"
+            "Não foi possível ler"
           )}
         </CardDescription>
       </CardHeader>
@@ -41,19 +41,19 @@ export function RouterStateCard({ read }: Props) {
         {!read.available || !state ? (
           <Alert variant="destructive">
             <WarningOctagonIcon />
-            <AlertTitle>Router state unavailable</AlertTitle>
+            <AlertTitle>Estado no roteador indisponível</AlertTitle>
             <AlertDescription>
-              {read.unavailableReason ?? "The router did not answer."} Do not act on this
-              line until it can be read.
+              {read.unavailableReason ?? "O roteador não respondeu."} Não aja sobre esta
+              linha até que ela possa ser lida.
             </AlertDescription>
           </Alert>
         ) : !state.exists ? (
           <Alert>
             <WarningOctagonIcon />
-            <AlertTitle>No secret named {state.username}</AlertTitle>
+            <AlertTitle>Nenhum secret chamado {state.username}</AlertTitle>
             <AlertDescription>
-              The mapping points at a username the router does not have — see Drift,
-              bucket &ldquo;missing&rdquo;.
+              O mapeamento aponta para um username que o roteador não tem — veja
+              Divergência, grupo &ldquo;Ausentes&rdquo;.
             </AlertDescription>
           </Alert>
         ) : (
@@ -61,7 +61,7 @@ export function RouterStateCard({ read }: Props) {
             items={[
               { label: "Username", value: <code className="font-mono text-xs">{state.username}</code> },
               {
-                label: "Profile",
+                label: "Perfil",
                 value: state.profile ? (
                   <code className="font-mono text-xs">{state.profile}</code>
                 ) : (
@@ -69,7 +69,7 @@ export function RouterStateCard({ read }: Props) {
                 ),
               },
               {
-                label: "Session",
+                label: "Sessão",
                 value: (
                   <Badge variant={state.online ? "default" : "outline"}>
                     {state.online ? "online" : "offline"}
@@ -77,15 +77,15 @@ export function RouterStateCard({ read }: Props) {
                 ),
               },
               {
-                label: "Disabled flag",
+                label: "Desabilitado",
                 value: state.disabled ? (
-                  <Badge variant="outline">disabled</Badge>
+                  <Badge variant="outline">desabilitado</Badge>
                 ) : (
-                  <span className="text-muted-foreground">not set</span>
+                  <span className="text-muted-foreground">não definida</span>
                 ),
               },
-              { label: "Last logged out", value: state.lastLoggedOut ?? "—" },
-              { label: "Comment", value: state.comment || "—" },
+              { label: "Último logout", value: state.lastLoggedOut ?? "—" },
+              { label: "Comentário", value: state.comment || "—" },
             ]}
           />
         )}

@@ -21,8 +21,8 @@ export default async function OutagesPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Outages"
-        description="Every time the router link dropped. Deferred events replay when it returns."
+        title="Quedas"
+        description="Todas as vezes que a conexão com o roteador caiu. Eventos adiados são reprocessados quando ela volta."
         actions={<WindowSelect value={window} />}
       />
       <Suspense

@@ -26,12 +26,12 @@ export async function DryRunIndicator() {
         aria-label={`Dry-run ${dryRun ? "on" : "off"}`}
       >
         <FlaskIcon />
-        Dry-run {dryRun ? "on" : "off"}
+        Dry-run {dryRun ? "ligado" : "desligado"}
       </TooltipTrigger>
       <TooltipContent side="bottom" align="end" className="max-w-xs text-pretty">
         {dryRun
-          ? "Router writes are being emailed to the owner instead of executed. Every success recorded right now changed nothing on the router."
-          : "Router writes are executed for real."}
+          ? "As escritas no roteador estão sendo enviadas por e-mail ao responsável em vez de executadas. Nenhum sucesso registrado agora alterou algo no roteador."
+          : "As escritas no roteador são executadas de verdade."}
       </TooltipContent>
     </Tooltip>
   )

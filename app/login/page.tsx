@@ -34,9 +34,9 @@ export default async function LoginPage({ searchParams }: Props) {
         <div className="absolute inset-0 flex flex-col justify-end p-10 text-muted-foreground">
           <p className="text-lg font-medium text-foreground">Zoho ↔ RouterOS</p>
           <p className="max-w-sm text-sm text-balance">
-            The bridge creates, unblocks, blocks and deletes customer access on the
-            router as billing events arrive. This dashboard shows what happened and
-            what needs a human.
+            A ponte cria, desbloqueia, bloqueia e exclui o acesso dos clientes no
+            roteador conforme chegam os eventos de cobrança. Este painel mostra o que
+            aconteceu e o que precisa de ação manual.
           </p>
         </div>
       </div>

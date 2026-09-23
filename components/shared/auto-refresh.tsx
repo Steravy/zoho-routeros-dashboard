@@ -39,7 +39,7 @@ export function AutoRefresh({ intervalMs }: Props) {
       aria-label="Refresh"
     >
       {pending ? <Spinner /> : <ArrowsClockwiseIcon />}
-      Refresh
+      Atualizar
     </Button>
   )
 }

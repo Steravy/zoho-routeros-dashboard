@@ -6,8 +6,8 @@ export default function CustomersLoading() {
   return (
     <>
       <PageHeader
-        title="Customers"
-        description="Find a customer by Zoho id, name, RouterOS username or phone number, then open their whole story."
+        title="Clientes"
+        description="Encontre um cliente por id do Zoho, nome, username do RouterOS ou telefone e abra todo o histórico dele."
       />
       <div className="space-y-2">
         <div className="flex gap-2">

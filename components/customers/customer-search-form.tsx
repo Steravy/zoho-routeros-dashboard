@@ -39,21 +39,21 @@ export function CustomerSearchForm({ initialQuery = "" }: Props) {
                   {...field}
                   id={field.name}
                   className="pl-8"
-                  placeholder="Zoho id, name, username or phone"
+                  placeholder="Id do Zoho, nome, username ou telefone"
                   autoComplete="off"
                   autoFocus
                   aria-label="Search customers"
                   aria-invalid={fieldState.invalid}
                 />
               </div>
-              <Button type="submit">Search</Button>
+              <Button type="submit">Buscar</Button>
             </div>
             {fieldState.invalid ? (
               <FieldError errors={[fieldState.error]} />
             ) : (
               <FieldDescription>
-                Phone numbers match in any format — (+238) 9971234, 00238 9971234 and
-                9971234 all work.
+                Telefones funcionam em qualquer formato — (+238) 9971234, 00238 9971234 e
+                9971234 funcionam.
               </FieldDescription>
             )}
           </Field>

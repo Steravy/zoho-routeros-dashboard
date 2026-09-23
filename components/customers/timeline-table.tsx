@@ -30,24 +30,24 @@ export function TimelineTable({ timeline }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Timeline</CardTitle>
-        <CardDescription>Everything the bridge did for this customer, newest first.</CardDescription>
+        <CardTitle>Linha do tempo</CardTitle>
+        <CardDescription>Tudo o que a ponte fez para este cliente, mais recentes primeiro.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {timeline.items.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No events recorded.</p>
+          <p className="text-sm text-muted-foreground">Nenhum evento registrado.</p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>When</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Outcome</TableHead>
-                  <TableHead className="hidden md:table-cell">Failure</TableHead>
+                  <TableHead>Quando</TableHead>
+                  <TableHead>Ação</TableHead>
+                  <TableHead>Resultado</TableHead>
+                  <TableHead className="hidden md:table-cell">Falha</TableHead>
                   <TableHead className="hidden lg:table-cell">Username</TableHead>
                   <TableHead className="hidden text-right lg:table-cell">
-                    Notification raised
+                    Notificação gerada
                   </TableHead>
                 </TableRow>
               </TableHeader>

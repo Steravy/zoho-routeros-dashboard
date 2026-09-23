@@ -23,10 +23,10 @@ export async function HealthStrip() {
     return (
       <Alert variant="destructive">
         <PlugsIcon />
-        <AlertTitle>API unreachable</AlertTitle>
+        <AlertTitle>API inacessível</AlertTitle>
         <AlertDescription>
-          The bridge did not answer <code>/health</code>. Everything below may be
-          missing or stale.
+          A ponte não respondeu <code>/health</code>. Tudo abaixo pode estar
+          ausente ou desatualizado.
         </AlertDescription>
       </Alert>
     )
@@ -43,10 +43,10 @@ export async function HealthStrip() {
       </Badge>
       <Badge variant={routerUp ? "secondary" : "destructive"}>
         {routerUp ? <CheckCircleIcon /> : <WarningCircleIcon />}
-        Router {health.routeros}
+        {routerUp ? "Roteador conectado" : `Roteador ${health.routeros}`}
       </Badge>
       <span className="text-muted-foreground">
-        {formatCount(health.pendingEvents)} events waiting for replay
+        {formatCount(health.pendingEvents)} eventos na fila
       </span>
     </div>
   )

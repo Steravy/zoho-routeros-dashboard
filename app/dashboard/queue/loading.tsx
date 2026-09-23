@@ -7,8 +7,8 @@ export default function QueueLoading() {
   return (
     <>
       <PageHeader
-        title="Replay queue"
-        description="Events that arrived while the router was unreachable, replayed when the link returns."
+        title="Fila"
+        description="Eventos que chegaram enquanto o roteador estava inacessível, reprocessados quando a conexão volta."
         actions={<Skeleton className="h-7 w-24" />}
       />
       <StatGridSkeleton count={3} className="grid auto-rows-min gap-4 md:grid-cols-3" />

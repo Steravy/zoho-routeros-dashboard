@@ -3,49 +3,49 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
   {
     term: "PPPoE secret",
     meaning:
-      "The router's stored credential for one customer: name, password, profile, disabled flag, comment. \"The secret\" and \"the customer's line\" are the same thing.",
+      "A credencial armazenada no roteador para um cliente: nome, senha, perfil, flag de desabilitado, comentário. \"O secret\" e \"a linha do cliente\" são a mesma coisa.",
   },
   {
-    term: "Profile",
-    meaning: "The bandwidth/service plan attached to a secret, e.g. 10mbps.",
+    term: "Perfil",
+    meaning: "O plano de banda/serviço associado a um secret, ex.: 10mbps.",
   },
   {
-    term: "Disabled flag",
+    term: "Desabilitado",
     meaning:
-      "RouterOS's on/off switch for a credential. Used only for a brand-new customer who has not paid yet. It is not how suspension works.",
+      "O liga/desliga do RouterOS para uma credencial. Usado só para cliente novo que ainda não pagou. Não é assim que a suspensão funciona.",
   },
   {
-    term: "Blocked profile",
+    term: "Perfil bloqueado",
     meaning:
-      "Suspension is a profile switch: a non-paying customer's secret moves to BLOQUEIO, a real throttled profile. They still connect, just slowly. Their real plan is saved and restored when they pay.",
+      "A suspensão é uma troca de perfil: o secret de um cliente inadimplente passa para BLOQUEIO, um perfil real com velocidade reduzida. Ele continua conectando, só que devagar. O plano real fica salvo e é restaurado quando ele paga.",
   },
   {
-    term: "Twin contracts",
+    term: "Contratos gêmeos",
     meaning:
-      "One person holding several contracts. The extra secrets are named by appending 0 or 00 to the base username. A secret already claimed by a different Zoho id is a twin's line — never take it.",
+      "Uma pessoa com vários contratos. Os secrets extras recebem 0 ou 00 no final do username base. Um secret já vinculado a outro id do Zoho é a linha de um gêmeo — nunca o pegue.",
   },
   {
-    term: "Probe ladder",
+    term: "Sondagem",
     meaning:
-      "How the bridge guesses a username with no stored mapping: lowercase first word of the first name + the 7 local phone digits, for every phone on the payload, then the same names with 0 and 00 appended. First unclaimed hit wins.",
+      "Como a ponte adivinha um username sem mapeamento salvo: primeira palavra do primeiro nome em minúsculas + os 7 dígitos locais do telefone, para cada telefone do payload, depois os mesmos nomes com 0 e 00 no final. O primeiro acerto não vinculado vence.",
   },
   {
     term: "Dry-run",
     meaning:
-      "A safety mode. When on, every router write is emailed to the owner instead of executed, and email subjects are prefixed [DRY-RUN]. Reads are unaffected — this dashboard shows real data either way.",
+      "Um modo de segurança. Quando ligado, toda escrita no roteador é enviada por e-mail ao responsável em vez de executada, e os assuntos dos e-mails recebem o prefixo [DRY-RUN]. Leituras não são afetadas — este painel mostra dados reais de qualquer forma.",
   },
   {
-    term: "Zoho customer id",
-    meaning: "The customer's primary key everywhere in this API. A string.",
+    term: "Id de cliente do Zoho",
+    meaning: "A chave primária do cliente em toda esta API. Uma string.",
   },
   {
-    term: "Replay queue",
+    term: "Fila",
     meaning:
-      "Events that arrived while the router was unreachable. Zoho was already told 200 OK, so they cannot be re-requested; the bridge replays them when the link returns and gives up after 50 attempts or 72 hours.",
+      "Eventos que chegaram enquanto o roteador estava inacessível. O Zoho já recebeu 200 OK, então eles não podem ser pedidos de novo; a ponte os reprocessa quando a conexão volta e desiste após 50 tentativas ou 72 horas.",
   },
   {
-    term: "Drift",
+    term: "Divergência",
     meaning:
-      "Where the router and the mapping table disagree: orphans (secrets nothing claims), missing (mappings pointing at gone secrets) and ambiguous (one username claimed by several Zoho ids).",
+      "Onde o roteador e a tabela de mapeamentos discordam: órfãos (secrets que ninguém reivindica), ausentes (mapeamentos apontando para secrets que sumiram) e ambíguos (um username reivindicado por vários ids do Zoho).",
   },
 ]

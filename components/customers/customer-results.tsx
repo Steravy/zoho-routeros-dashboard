@@ -31,17 +31,17 @@ export async function CustomerResults({ query }: Props) {
     return (
       <EmptyState
         icon={<UserFocusIcon />}
-        title="No customers match"
+        title="Nenhum cliente encontrado"
         description={
           <>
-            Phone numbers are matched against the RouterOS username, so a customer whose
-            resolution <em>failed</em> has no username and cannot be found by phone —
-            and those are exactly the ones on the worklist.
+            Telefones são comparados com o username do RouterOS, então um cliente cuja
+            resolução <em>falhou</em> não tem username e não pode ser encontrado pelo
+            telefone — e são exatamente esses que estão na lista de trabalho.
           </>
         }
         action={
           <Button asChild variant="outline">
-            <Link href="/dashboard/needs-human">Open Needs a human</Link>
+            <Link href="/dashboard/needs-human">Abrir Ação manual</Link>
           </Button>
         }
       />
@@ -54,11 +54,11 @@ export async function CustomerResults({ query }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
+              <TableHead>Cliente</TableHead>
               <TableHead className="hidden md:table-cell">Username</TableHead>
-              <TableHead>Mapped</TableHead>
-              <TableHead className="hidden lg:table-cell">Last event</TableHead>
-              <TableHead>Last outcome</TableHead>
+              <TableHead>Mapeado</TableHead>
+              <TableHead className="hidden lg:table-cell">Último evento</TableHead>
+              <TableHead>Último resultado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -69,11 +69,11 @@ export async function CustomerResults({ query }: Props) {
                     href={`/dashboard/customers/${encodeURIComponent(hit.zohoCustomerId)}`}
                     className="font-medium hover:underline"
                   >
-                    {hit.name ?? "Unnamed customer"}
+                    {hit.name ?? "Cliente sem nome"}
                   </Link>
                   <div className="flex items-center gap-1 font-mono text-xs text-muted-foreground">
                     {hit.zohoCustomerId}
-                    <CopyButton value={hit.zohoCustomerId} label="Zoho id" />
+                    <CopyButton value={hit.zohoCustomerId} label="id do Zoho" />
                   </div>
                 </TableCell>
                 <TableCell className="hidden font-mono text-xs md:table-cell">
@@ -81,7 +81,7 @@ export async function CustomerResults({ query }: Props) {
                 </TableCell>
                 <TableCell>
                   <Badge variant={hit.mapped ? "secondary" : "outline"}>
-                    {hit.mapped ? "mapped" : "no mapping"}
+                    {hit.mapped ? "mapeado" : "sem mapeamento"}
                   </Badge>
                 </TableCell>
                 <TableCell className="hidden whitespace-nowrap text-muted-foreground lg:table-cell">

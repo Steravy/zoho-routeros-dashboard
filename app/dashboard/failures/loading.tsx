@@ -7,8 +7,8 @@ export default function FailuresLoading() {
   return (
     <>
       <PageHeader
-        title="Failures"
-        description="Who needs a human, and why. One row per failed event, newest first."
+        title="Falhas"
+        description="Quem precisa de ação manual, e por quê. Uma linha por evento com falha, mais recentes primeiro."
         actions={<Skeleton className="h-7 w-44" />}
       />
       <div className="flex flex-wrap gap-2">

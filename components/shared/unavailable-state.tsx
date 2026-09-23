@@ -19,7 +19,7 @@ interface Props {
  */
 export function UnavailableState({
   reason,
-  title = "Nothing to show from the router",
+  title = "Nada para mostrar do roteador",
 }: Props) {
   return (
     <Empty className="flex-none border border-dashed py-12">

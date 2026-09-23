@@ -1,4 +1,4 @@
-const LOCALE = "en-GB"
+const LOCALE = "pt-BR"
 
 const dateTime = new Intl.DateTimeFormat(LOCALE, {
   dateStyle: "medium",
@@ -16,7 +16,7 @@ export function formatDateTime(iso: string | null | undefined): string {
   return Number.isNaN(date.getTime()) ? EM_DASH : dateTime.format(date)
 }
 
-/** "3 minutes ago", "in 2 hours", "yesterday". */
+/** "há 3 minutos", "em 2 horas", "ontem". */
 export function formatRelative(
   iso: string | null | undefined,
   now: number = Date.now()
@@ -51,7 +51,7 @@ export function formatDuration(seconds: number | null | undefined): string {
 
 /** 0.9579 → "95.8%". `null` means nothing was decided — never render it as 0%. */
 export function formatRate(rate: number | null | undefined): string {
-  if (rate === null || rate === undefined) return "No data"
+  if (rate === null || rate === undefined) return "Sem dados"
   return `${(rate * 100).toFixed(1)}%`
 }
 

@@ -21,8 +21,8 @@ export default async function CustomersPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Customers"
-        description="Find a customer by Zoho id, name, RouterOS username or phone number, then open their whole story."
+        title="Clientes"
+        description="Encontre um cliente por id do Zoho, nome, username do RouterOS ou telefone e abra todo o histórico dele."
       />
       <CustomerSearchForm initialQuery={query.q} />
       {query.q ? (
@@ -32,8 +32,8 @@ export default async function CustomersPage({ searchParams }: Props) {
       ) : (
         <EmptyState
           icon={<MagnifyingGlassIcon />}
-          title="Search to begin"
-          description="Results open the customer 360: identity, mapping, live router state, queue and timeline."
+          title="Busque para começar"
+          description="Os resultados abrem o cliente 360: identidade, mapeamento, estado ao vivo no roteador, fila e linha do tempo."
         />
       )}
     </>

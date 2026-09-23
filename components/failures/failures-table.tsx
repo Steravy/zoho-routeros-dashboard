@@ -38,8 +38,8 @@ function needsHuman(item: FailureItem): boolean {
 /** The worklist. `errorMessage` is shown verbatim — it carries what the code cannot. */
 export async function FailuresTable({
   query,
-  emptyTitle = "No failures match",
-  emptyDescription = "Nothing failed in this window with these filters — genuinely good news.",
+  emptyTitle = "Nenhuma falha encontrada",
+  emptyDescription = "Nada falhou neste período com estes filtros — boa notícia de verdade.",
 }: Props) {
   const page = await getFailures(query)
 
@@ -53,11 +53,11 @@ export async function FailuresTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>When</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead className="hidden md:table-cell">Action</TableHead>
-              <TableHead>Failure</TableHead>
-              <TableHead className="hidden lg:table-cell">Message</TableHead>
+              <TableHead>Quando</TableHead>
+              <TableHead>Cliente</TableHead>
+              <TableHead className="hidden md:table-cell">Ação</TableHead>
+              <TableHead>Falha</TableHead>
+              <TableHead className="hidden lg:table-cell">Mensagem</TableHead>
               <TableHead className="hidden md:table-cell">Username</TableHead>
               <TableHead className="w-0" />
             </TableRow>
@@ -70,7 +70,7 @@ export async function FailuresTable({
                 </TableCell>
                 <TableCell>
                   <Link href={customerHref(item.zohoCustomerId)} className="font-medium hover:underline">
-                    {item.zohoCustomerName || "Unnamed customer"}
+                    {item.zohoCustomerName || "Cliente sem nome"}
                   </Link>
                   <div className="font-mono text-xs text-muted-foreground">{item.zohoCustomerId}</div>
                 </TableCell>
@@ -89,7 +89,7 @@ export async function FailuresTable({
                   {item.routerosUsername || (
                     <span
                       className="font-sans text-muted-foreground"
-                      title="Resolution never produced a username"
+                      title="A resolução nunca gerou um username"
                     >
                       —
                     </span>
@@ -99,7 +99,7 @@ export async function FailuresTable({
                   {needsHuman(item) && (
                     <Button asChild variant="ghost" size="sm">
                       <Link href={`${customerHref(item.zohoCustomerId)}/suggestions`}>
-                        Suggestions
+                        Sugestões
                       </Link>
                     </Button>
                   )}

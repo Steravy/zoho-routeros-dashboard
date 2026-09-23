@@ -19,40 +19,40 @@ import type {
 
 export const NAV_MAIN: NavMainItem[] = [
   {
-    title: "Operations",
+    title: "Operações",
     url: DASHBOARD_HOME,
     icon: PulseIcon,
     items: [
-      { title: "Overview", url: DASHBOARD_HOME },
-      { title: "Failures", url: "/dashboard/failures" },
-      { title: "Needs a human", url: "/dashboard/needs-human" },
-      { title: "Queue", url: "/dashboard/queue" },
+      { title: "Visão geral", url: DASHBOARD_HOME },
+      { title: "Falhas", url: "/dashboard/failures" },
+      { title: "Ação manual", url: "/dashboard/needs-human" },
+      { title: "Fila", url: "/dashboard/queue" },
     ],
   },
   {
-    title: "Router",
+    title: "Roteador",
     url: "/dashboard/census",
     icon: HardDrivesIcon,
     items: [
-      { title: "Census", url: "/dashboard/census" },
-      { title: "Drift", url: "/dashboard/drift" },
-      { title: "Outages", url: "/dashboard/outages" },
+      { title: "Censo", url: "/dashboard/census" },
+      { title: "Divergência", url: "/dashboard/drift" },
+      { title: "Quedas", url: "/dashboard/outages" },
     ],
   },
   // One destination, so no children: rendered as a flat item.
-  { title: "Customers", url: "/dashboard/customers", icon: UsersIcon, items: [] },
+  { title: "Clientes", url: "/dashboard/customers", icon: UsersIcon, items: [] },
 ]
 
 /** The three worklists an operator opens most. */
 export const NAV_SHORTCUTS: NavShortcut[] = [
-  { name: "Needs a human", url: "/dashboard/needs-human", icon: UserFocusIcon },
-  { name: "Queue", url: "/dashboard/queue", icon: QueueIcon },
-  { name: "Drift", url: "/dashboard/drift", icon: GitDiffIcon },
+  { name: "Ação manual", url: "/dashboard/needs-human", icon: UserFocusIcon },
+  { name: "Fila", url: "/dashboard/queue", icon: QueueIcon },
+  { name: "Divergência", url: "/dashboard/drift", icon: GitDiffIcon },
 ]
 
 export const NAV_SECONDARY: NavLink[] = [
-  { title: "Health & config", url: "/dashboard/health", icon: HeartbeatIcon },
-  { title: "Glossary", url: "/dashboard/glossary", icon: BookOpenIcon },
+  { title: "Status e config", url: "/dashboard/health", icon: HeartbeatIcon },
+  { title: "Glossário", url: "/dashboard/glossary", icon: BookOpenIcon },
 ]
 
 /** Overview matches only exactly; every other url also owns its nested routes. */

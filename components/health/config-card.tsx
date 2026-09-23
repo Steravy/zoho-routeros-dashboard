@@ -17,8 +17,8 @@ export async function ConfigCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bridge configuration</CardTitle>
-        <CardDescription>Read live from the API; changes take effect at its next restart.</CardDescription>
+        <CardTitle>Configuração da ponte</CardTitle>
+        <CardDescription>Lida ao vivo da API; mudanças entram em vigor no próximo reinício.</CardDescription>
       </CardHeader>
       <CardContent>
         <KeyValueList
@@ -26,30 +26,30 @@ export async function ConfigCard() {
             {
               label: "Dry-run",
               value: config.dryRun ? (
-                <Badge variant="destructive">on — router writes are emailed, not executed</Badge>
+                <Badge variant="destructive">ligado — escritas no roteador são enviadas por e-mail, não executadas</Badge>
               ) : (
-                <Badge variant="secondary">off — writes are executed</Badge>
+                <Badge variant="secondary">desligado — escritas são executadas</Badge>
               ),
             },
             {
-              label: "Notifications",
+              label: "Notificações",
               value: config.notificationsEnabled ? (
-                <Badge variant="secondary">enabled</Badge>
+                <Badge variant="secondary">ativadas</Badge>
               ) : (
-                <Badge variant="outline">muted — emailSent flags still record as true</Badge>
+                <Badge variant="outline">silenciadas — flags emailSent continuam sendo gravadas como true</Badge>
               ),
             },
             {
-              label: "Default profile",
+              label: "Perfil padrão",
               value: <code className="font-mono text-xs">{config.defaultProfile}</code>,
             },
             {
-              label: "Blocked profile",
+              label: "Perfil bloqueado",
               value: <code className="font-mono text-xs">{config.blockedProfile}</code>,
             },
             {
-              label: "Session lifetime",
-              value: `${formatDuration(config.sessionTtlMinutes * 60)} — absolute, no refresh`,
+              label: "Duração da sessão",
+              value: `${formatDuration(config.sessionTtlMinutes * 60)} — absoluta, sem renovação`,
             },
           ]}
         />

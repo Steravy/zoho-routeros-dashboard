@@ -15,7 +15,7 @@ interface Props {
   byProfile: ProfileCount[]
   /** The suspension profile (`config.blockedProfile`) — the one bar the reader is looking for. */
   blockedProfile: string
-  /** Bars beyond this fold into "Other" — never more hues, never a scroll. */
+  /** Bars beyond this fold into "Outros" — never more hues, never a scroll. */
   maxBars?: number
 }
 
@@ -24,7 +24,7 @@ const ROW_HEIGHT = 36
 // Emphasis form: every plan in the de-emphasis hue, the blocked profile in slot 1.
 const config = {
   count: { label: "Secrets", color: "var(--chart-2)" },
-  blocked: { label: "Blocked profile", theme: { light: "#2a78d6", dark: "#3987e5" } },
+  blocked: { label: "Perfil bloqueado", theme: { light: "#2a78d6", dark: "#3987e5" } },
 } satisfies ChartConfig
 
 export function ProfileBreakdownChart({ byProfile, blockedProfile, maxBars = 8 }: Props) {
@@ -42,7 +42,7 @@ export function ProfileBreakdownChart({ byProfile, blockedProfile, maxBars = 8 }
   const data = head.map((row) => ({ profile: row.profile, count: row.count }))
   if (tail.length) {
     data.push({
-      profile: `Other (${tail.length} profiles)`,
+      profile: `Outros (${tail.length} perfis)`,
       count: tail.reduce((sum, row) => sum + row.count, 0),
     })
   }

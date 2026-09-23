@@ -38,15 +38,15 @@ export function NavProjects({ shortcuts }: Props) {
   async function copyLink(url: string) {
     try {
       await navigator.clipboard.writeText(`${window.location.origin}${url}`)
-      toast.success("Link copied")
+      toast.success("Link copiado")
     } catch {
-      toast.error("Could not copy the link")
+      toast.error("Não foi possível copiar o link")
     }
   }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Shortcuts</SidebarGroupLabel>
+      <SidebarGroupLabel>Atalhos</SidebarGroupLabel>
       <SidebarMenu>
         {shortcuts.map((item) => (
           <SidebarMenuItem key={item.name}>
@@ -74,12 +74,12 @@ export function NavProjects({ shortcuts }: Props) {
                 <DropdownMenuItem asChild>
                   <a href={item.url} target="_blank" rel="noreferrer">
                     <ArrowSquareOutIcon className="text-muted-foreground" />
-                    <span>Open in new tab</span>
+                    <span>Abrir em nova aba</span>
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => copyLink(item.url)}>
                   <LinkIcon className="text-muted-foreground" />
-                  <span>Copy link</span>
+                  <span>Copiar link</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

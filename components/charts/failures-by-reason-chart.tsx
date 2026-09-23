@@ -23,9 +23,9 @@ const ROW_HEIGHT = 44
 // Two series, so two categorical slots (validated for both modes on this theme's
 // surfaces) and a legend. Both are counts on one axis — never two scales.
 const config = {
-  failures: { label: "Failures", theme: { light: "#2a78d6", dark: "#3987e5" } },
+  failures: { label: "Falhas", theme: { light: "#2a78d6", dark: "#3987e5" } },
   customers: {
-    label: "Customers affected",
+    label: "Clientes afetados",
     theme: { light: "#eb6834", dark: "#d95926" },
   },
 } satisfies ChartConfig
@@ -34,7 +34,7 @@ export function FailuresByReasonChart({ reasons }: Props) {
   const data = [...reasons]
     .sort((a, b) => b.count - a.count)
     .map((reason) => ({
-      label: reason.failureCode ? FAILURE_CODE_LABELS[reason.failureCode] : "Unclassified",
+      label: reason.failureCode ? FAILURE_CODE_LABELS[reason.failureCode] : "Não classificado",
       failures: reason.count,
       customers: reason.customers,
     }))

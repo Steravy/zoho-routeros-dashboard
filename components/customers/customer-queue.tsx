@@ -34,11 +34,11 @@ export function CustomerQueue({ items }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Queued events</CardTitle>
+        <CardTitle>Eventos enfileirados</CardTitle>
         <CardDescription>
           {items.length === 0
-            ? "Nothing was ever queued for this customer."
-            : `Events held while the router was unreachable${items.length >= CUSTOMER_QUEUE_CAP ? ` — showing the first ${CUSTOMER_QUEUE_CAP}` : ""}.`}
+            ? "Nada foi enfileirado para este cliente."
+            : `Eventos retidos enquanto o roteador estava inacessível${items.length >= CUSTOMER_QUEUE_CAP ? ` — mostrando os primeiros ${CUSTOMER_QUEUE_CAP}` : ""}.`}
         </CardDescription>
       </CardHeader>
       {items.length > 0 && (
@@ -46,12 +46,12 @@ export function CustomerQueue({ items }: Props) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Event</TableHead>
+                <TableHead>Evento</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Attempts</TableHead>
-                <TableHead className="hidden md:table-cell">Last error</TableHead>
-                <TableHead className="hidden lg:table-cell">Queued</TableHead>
-                <TableHead className="hidden lg:table-cell">Resolved</TableHead>
+                <TableHead className="text-right">Tentativas</TableHead>
+                <TableHead className="hidden md:table-cell">Último erro</TableHead>
+                <TableHead className="hidden lg:table-cell">Enfileirado</TableHead>
+                <TableHead className="hidden lg:table-cell">Resolvido</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

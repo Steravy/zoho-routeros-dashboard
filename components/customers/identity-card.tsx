@@ -10,8 +10,8 @@ interface Props {
 }
 
 const PHONES_FROM: Record<NonNullable<CustomerIdentity["phonesFrom"]>, string> = {
-  "last-failed-event": "from the last failed event",
-  "queued-event": "from a queued event",
+  "last-failed-event": "do último evento com falha",
+  "queued-event": "de um evento enfileirado",
 }
 
 /** Phones come from a stored payload, so they are empty for customers nothing has gone wrong for. */
@@ -19,27 +19,27 @@ export function IdentityCard({ zohoCustomerId, identity }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Identity</CardTitle>
+        <CardTitle>Identidade</CardTitle>
       </CardHeader>
       <CardContent>
         <KeyValueList
           items={[
-            { label: "Name", value: identity.name ?? "Unknown" },
+            { label: "Nome", value: identity.name ?? "Desconhecido" },
             {
-              label: "Zoho id",
+              label: "Id do Zoho",
               value: (
                 <span className="inline-flex items-center gap-1 font-mono text-xs">
                   {zohoCustomerId}
-                  <CopyButton value={zohoCustomerId} label="Zoho id" />
+                  <CopyButton value={zohoCustomerId} label="id do Zoho" />
                 </span>
               ),
             },
             {
-              label: "Phones",
+              label: "Telefones",
               value:
                 identity.phones.length === 0 ? (
                   <span className="text-muted-foreground">
-                    None stored — nothing has gone wrong for this customer
+                    Nenhum salvo — nada deu errado para este cliente
                   </span>
                 ) : (
                   <span className="flex flex-wrap items-center gap-1">

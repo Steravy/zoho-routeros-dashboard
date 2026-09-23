@@ -22,8 +22,8 @@ export default async function FailuresPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Failures"
-        description="Who needs a human, and why. One row per failed event, newest first."
+        title="Falhas"
+        description="Quem precisa de ação manual, e por quê. Uma linha por evento com falha, mais recentes primeiro."
         actions={<WindowSelect value={query.window} />}
       />
       <FailuresFilters value={query} />

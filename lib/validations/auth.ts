@@ -6,9 +6,9 @@ export const loginSchema = z.object({
   username: z
     .string()
     .trim()
-    .min(1, "Enter your username")
-    .max(64, "Username is too long"),
-  password: z.string().min(1, "Enter your password"),
+    .min(1, "Informe seu usuário")
+    .max(64, "Usuário muito longo"),
+  password: z.string().min(1, "Informe sua senha"),
 })
 
 /** `?next=` must be a same-origin path — never an absolute URL or `//host`. */
@@ -25,6 +25,6 @@ export const customerSearchSchema = z.object({
   q: z
     .string()
     .trim()
-    .min(2, "Type at least 2 characters")
-    .max(120, "Keep it under 120 characters"),
+    .min(2, "Digite pelo menos 2 caracteres")
+    .max(120, "Use no máximo 120 caracteres"),
 })

@@ -30,8 +30,8 @@ export function QueueTable({ items }: Props) {
     return (
       <EmptyState
         icon={<CheckCircleIcon />}
-        title="The queue is empty"
-        description="This is the normal state. Events only queue while the router is unreachable."
+        title="A fila está vazia"
+        description="Este é o estado normal. Eventos só entram na fila enquanto o roteador está inacessível."
       />
     )
   }
@@ -42,12 +42,12 @@ export function QueueTable({ items }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead>Event</TableHead>
-              <TableHead className="text-right">Attempts</TableHead>
-              <TableHead className="text-right">Waiting</TableHead>
-              <TableHead className="hidden lg:table-cell">Last error</TableHead>
-              <TableHead className="hidden md:table-cell">Queued</TableHead>
+              <TableHead>Cliente</TableHead>
+              <TableHead>Evento</TableHead>
+              <TableHead className="text-right">Tentativas</TableHead>
+              <TableHead className="text-right">Aguardando</TableHead>
+              <TableHead className="hidden lg:table-cell">Último erro</TableHead>
+              <TableHead className="hidden md:table-cell">Enfileirado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -88,7 +88,7 @@ export function QueueTable({ items }: Props) {
       </div>
       {items.length >= PENDING_LIST_CAP && (
         <p className="text-sm text-muted-foreground">
-          Showing the first {PENDING_LIST_CAP} rows — the queue holds more.
+          Mostrando as primeiras {PENDING_LIST_CAP} linhas — a fila tem mais.
         </p>
       )}
     </div>

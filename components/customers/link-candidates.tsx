@@ -27,18 +27,18 @@ export function LinkCandidates({ suggestions }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Candidate secrets</CardTitle>
+        <CardTitle>Secrets candidatos</CardTitle>
         <CardDescription>
-          Secrets on the router that could be this customer&rsquo;s. Copy the username
-          and create the mapping by hand.
+          Secrets no roteador que podem ser deste cliente. Copie o username e crie o
+          mapeamento manualmente.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {suggestions.length === 0 ? (
           <EmptyState
             icon={<MagnifyingGlassMinusIcon />}
-            title="No candidate secrets"
-            description="Nothing on the router matches the probed names or the phone digits."
+            title="Nenhum secret candidato"
+            description="Nada no roteador corresponde aos nomes sondados ou aos dígitos do telefone."
           />
         ) : (
           <ul className="space-y-3">
@@ -62,33 +62,33 @@ export function LinkCandidates({ suggestions }: Props) {
                       {SUGGESTION_SOURCE_LABELS[candidate.source]}
                     </Badge>
                     {candidate.linkable ? (
-                      <Badge>linkable</Badge>
+                      <Badge>vinculável</Badge>
                     ) : (
-                      <Badge variant="destructive">claimed — do not link</Badge>
+                      <Badge variant="destructive">já vinculado — não vincular</Badge>
                     )}
                   </div>
                 </div>
 
                 <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
                   <div>
-                    <dt className="inline text-muted-foreground">Profile </dt>
+                    <dt className="inline text-muted-foreground">Perfil </dt>
                     <dd className="inline font-mono text-xs">{candidate.profile ?? "—"}</dd>
                   </div>
                   <div>
-                    <dt className="inline text-muted-foreground">Session </dt>
+                    <dt className="inline text-muted-foreground">Sessão </dt>
                     <dd className="inline">{candidate.online ? "online" : "offline"}</dd>
                   </div>
                   <div>
-                    <dt className="inline text-muted-foreground">Disabled </dt>
-                    <dd className="inline">{candidate.disabled ? "yes" : "no"}</dd>
+                    <dt className="inline text-muted-foreground">Desabilitado </dt>
+                    <dd className="inline">{candidate.disabled ? "sim" : "não"}</dd>
                   </div>
                   <div>
-                    <dt className="inline text-muted-foreground">Last logged out </dt>
+                    <dt className="inline text-muted-foreground">Último logout </dt>
                     <dd className="inline">{candidate.lastLoggedOut ?? "—"}</dd>
                   </div>
                   {candidate.comment && (
                     <div>
-                      <dt className="inline text-muted-foreground">Comment </dt>
+                      <dt className="inline text-muted-foreground">Comentário </dt>
                       <dd className="inline">{candidate.comment}</dd>
                     </div>
                   )}
@@ -96,7 +96,7 @@ export function LinkCandidates({ suggestions }: Props) {
 
                 {candidate.claimedBy.length > 0 && (
                   <p className="mt-2 text-sm">
-                    Already mapped to{" "}
+                    Já mapeado para{" "}
                     {candidate.claimedBy.map((id, index) => (
                       <span key={id}>
                         {index > 0 && ", "}
@@ -108,7 +108,7 @@ export function LinkCandidates({ suggestions }: Props) {
                         </Link>
                       </span>
                     ))}
-                    . Taking it would cut off a paying customer.
+                    . Pegá-lo cortaria um cliente pagante.
                   </p>
                 )}
               </li>

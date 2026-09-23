@@ -26,8 +26,8 @@ export default async function OverviewPage({ searchParams }: Props) {
   return (
     <>
       <PageHeader
-        title="Overview"
-        description="Is the bridge healthy? Outcome mix, queue depth and router state."
+        title="Visão geral"
+        description="A ponte está saudável? Resultados, fila e estado do roteador."
         actions={
           <>
             <WindowSelect value={window} />

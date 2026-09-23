@@ -15,32 +15,32 @@ export async function OutageTotals({ window }: Props) {
   return (
     <div className="space-y-2">
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-5">
-        <StatCard label="Outages" value={formatCount(totals.outages)} />
+        <StatCard label="Quedas" value={formatCount(totals.outages)} />
         <StatCard
-          label="Downtime"
+          label="Tempo fora"
           value={formatDuration(totals.downtimeSeconds)}
-          hint="Inside this window"
+          hint="Dentro deste período"
         />
         <StatCard
-          label="Longest"
+          label="Mais longa"
           value={formatDuration(totals.longestSeconds)}
-          hint="Real length of the longest outage"
+          hint="Duração real da queda mais longa"
         />
         <StatCard
-          label="Mean time to recovery"
+          label="Recuperação média"
           value={
             totals.meanTimeToRecoverySeconds === null
               ? "—"
               : formatDuration(totals.meanTimeToRecoverySeconds)
           }
-          hint={totals.meanTimeToRecoverySeconds === null ? "No outage ended in this window" : undefined}
+          hint={totals.meanTimeToRecoverySeconds === null ? "Nenhuma queda terminou neste período" : undefined}
         />
-        <StatCard label="Uptime" value={formatRatio(totals.uptimeRatio)} />
+        <StatCard label="Disponibilidade" value={formatRatio(totals.uptimeRatio)} />
       </div>
       {approximate && (
         <p className="text-sm text-muted-foreground">
-          Totals are computed from the first 200 outages only — treat them as
-          approximate at this volume.
+          Os totais são calculados apenas com as primeiras 200 quedas — considere-os
+          aproximados neste volume.
         </p>
       )}
     </div>

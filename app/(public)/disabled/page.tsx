@@ -21,15 +21,15 @@ export default function DisabledPage() {
             <EmptyMedia variant="icon">
               <PowerIcon />
             </EmptyMedia>
-            <EmptyTitle>The dashboard is switched off</EmptyTitle>
+            <EmptyTitle>O painel está desativado</EmptyTitle>
             <EmptyDescription>
-              The API has <code>DASHBOARD_ENABLED=false</code>. Nothing here
-              will load until it is turned back on.
+              A API está com <code>DASHBOARD_ENABLED=false</code>. Nada aqui vai
+              carregar até que ele seja reativado.
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Button asChild>
-              <Link href="/">Try again</Link>
+              <Link href="/">Tentar novamente</Link>
             </Button>
           </EmptyContent>
         </Empty>

@@ -32,26 +32,26 @@ export async function IgnoredEventTypes({ window }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Ignored event types</CardTitle>
+        <CardTitle>Eventos ignorados</CardTitle>
         <CardDescription>
-          Zoho events nothing is mapped to. A name that keeps appearing is usually a
-          missing mapping, not noise.
+          Eventos do Zoho sem mapeamento. Um nome que continua aparecendo geralmente é
+          um mapeamento faltando, não ruído.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {rows.length === 0 ? (
           <EmptyState
             icon={<CheckCircleIcon />}
-            title="No unmapped events"
-            description="Every Zoho event in this window had a mapping."
+            title="Nenhum evento sem mapeamento"
+            description="Todo evento do Zoho neste período tinha mapeamento."
           />
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Event type</TableHead>
-                <TableHead className="text-right">Count</TableHead>
-                <TableHead className="hidden sm:table-cell">Last seen</TableHead>
+                <TableHead>Tipo de evento</TableHead>
+                <TableHead className="text-right">Quantidade</TableHead>
+                <TableHead className="hidden sm:table-cell">Visto por último</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

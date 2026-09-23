@@ -6,6 +6,12 @@ import type { DecodedSession } from "@/types/auth"
  */
 
 export const SESSION_COOKIE = "ops_session"
+/**
+ * Set by `proxy.ts` when it purges a revoked token. A background request (a
+ * prefetch, a refresh) can consume the 401 before the operator navigates, so
+ * this is what still lets the login page say "you were signed out".
+ */
+export const SIGNED_OUT_COOKIE = "ops_signed_out"
 
 /**
  * The backend token looks like a JWT and is not: two segments,
@@ -28,7 +34,10 @@ export function decodeSessionToken(
       return null
     }
     const expiresAt = new Date(claims.exp)
-    if (Number.isNaN(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+    if (
+      Number.isNaN(expiresAt.getTime()) ||
+      expiresAt.getTime() <= Date.now()
+    ) {
       return null
     }
     return { actor: claims.u, expiresAt }

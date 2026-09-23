@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-import { SESSION_COOKIE, decodeSessionToken } from "@/lib/auth/token"
+import {
+  SESSION_COOKIE,
+  SIGNED_OUT_COOKIE,
+  decodeSessionToken,
+} from "@/lib/auth/token"
 import { DASHBOARD_HOME } from "@/lib/constants"
 
 const PUBLIC_PATHS = ["/login", "/disabled"]
@@ -20,10 +24,35 @@ export function proxy(request: NextRequest) {
   if (!session && !isPublic) {
     const login = new URL("/login", request.url)
     if (pathname !== "/") login.searchParams.set("next", `${pathname}${search}`)
-    if (rawToken) login.searchParams.set("reason", "expired")
+    if (rawToken || request.cookies.has(SIGNED_OUT_COOKIE)) {
+      login.searchParams.set("reason", "expired")
+    }
 
     const response = NextResponse.redirect(login)
     if (rawToken) response.cookies.delete(SESSION_COOKIE)
+    return response
+  }
+
+  // A backend 401 lands here with a cookie that still *decodes* (the token was
+  // revoked by a password change, a removal or a secret rotation, not by `exp`).
+  // Server Components cannot delete cookies, so this is where the stale copy
+  // goes — otherwise the branch below would bounce straight back into the 401.
+  if (
+    pathname === "/login" &&
+    request.nextUrl.searchParams.get("reason") === "expired"
+  ) {
+    const response = NextResponse.next()
+    if (rawToken) {
+      response.cookies.delete(SESSION_COOKIE)
+      // Survives until the next successful login (`setSessionCookie` clears it).
+      response.cookies.set(SIGNED_OUT_COOKIE, "1", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60,
+        path: "/",
+      })
+    }
     return response
   }
 

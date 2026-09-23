@@ -216,6 +216,11 @@ Two consequences for your UI:
 
 ### No roles
 
+> **Superseded.** Operators now live in the database with an `isAdmin` flag, and the
+> `/operators` routes answer 403 to non-admins. See `docs/dashboard-ui-auth-guide.md`.
+> The paragraph below describes the previous release.
+
+
 Every operator sees everything. There is no permission model, no 403, nothing to
 authorise beyond "is there a valid token". Do not build a roles UI.
 

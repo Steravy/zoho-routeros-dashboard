@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 
 import { login } from "@/lib/api/auth"
 import { ApiError } from "@/lib/api/client"
-import { setSessionCookie } from "@/lib/auth/session"
+import { parseRetrySeconds, tooManyAttemptsMessage } from "@/lib/auth/retry"
+import { replaceSession } from "@/lib/auth/session"
 import { loginSchema } from "@/lib/validations/auth"
 
 export async function POST(request: Request) {
@@ -10,15 +11,19 @@ export async function POST(request: Request) {
   const parsed = loginSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
-      { message: "Informe seu usuário e senha" },
+      { message: "Informe seu e-mail e senha" },
       { status: 400 }
     )
   }
 
   try {
     const result = await login(parsed.data)
-    await setSessionCookie(result.token, new Date(result.expiresAt))
-    return NextResponse.json({ actor: result.actor, expiresAt: result.expiresAt })
+    await replaceSession(result)
+    // `isAdmin` stays server-side: the layout re-reads it from /me on every render.
+    return NextResponse.json({
+      actor: result.actor,
+      expiresAt: result.expiresAt,
+    })
   } catch (error) {
     if (error instanceof ApiError) {
       return NextResponse.json(
@@ -34,10 +39,11 @@ export async function POST(request: Request) {
 function publicMessage(error: ApiError): string {
   switch (error.status) {
     case 401:
-      return "Usuário ou senha incorretos"
+      // Wrong password or unknown email — the server does not say which, and neither do we.
+      return "E-mail ou senha incorretos"
     case 429:
-      // The backend's text carries the wait: "Too many login attempts — try again in 300s"
-      return tooManyAttempts(error.message)
+      // Keeps the "<n>s" the login form counts down from.
+      return tooManyAttemptsMessage(parseRetrySeconds(error.message))
     case 503:
       return "O painel está desativado"
     case 0:
@@ -45,12 +51,4 @@ function publicMessage(error: ApiError): string {
     default:
       return "Falha ao entrar. Tente novamente."
   }
-}
-
-/** Keeps the "<n>s" the login form counts down from. */
-function tooManyAttempts(message: string): string {
-  const seconds = /(\d+)\s*s\b/.exec(message)?.[1]
-  return seconds
-    ? `Muitas tentativas de login — tente novamente em ${seconds}s`
-    : "Muitas tentativas de login — tente novamente mais tarde"
 }

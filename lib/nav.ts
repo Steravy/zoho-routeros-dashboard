@@ -5,8 +5,10 @@ import {
   HeartbeatIcon,
   PulseIcon,
   QueueIcon,
+  UserCircleIcon,
   UserFocusIcon,
   UsersIcon,
+  UsersThreeIcon,
 } from "@phosphor-icons/react/ssr"
 
 import { DASHBOARD_HOME } from "@/lib/constants"
@@ -40,7 +42,22 @@ export const NAV_MAIN: NavMainItem[] = [
     ],
   },
   // One destination, so no children: rendered as a flat item.
-  { title: "Clientes", url: "/dashboard/customers", icon: UsersIcon, items: [] },
+  {
+    title: "Clientes",
+    url: "/dashboard/customers",
+    icon: UsersIcon,
+    items: [],
+  },
+]
+
+/** Rendered only for admins; the server answers 403 to everyone else regardless. */
+export const NAV_ADMIN: NavMainItem[] = [
+  {
+    title: "Operadores",
+    url: "/dashboard/operators",
+    icon: UsersThreeIcon,
+    items: [],
+  },
 ]
 
 /** The three worklists an operator opens most. */
@@ -51,6 +68,7 @@ export const NAV_SHORTCUTS: NavShortcut[] = [
 ]
 
 export const NAV_SECONDARY: NavLink[] = [
+  { title: "Minha conta", url: "/dashboard/account", icon: UserCircleIcon },
   { title: "Status e config", url: "/dashboard/health", icon: HeartbeatIcon },
   { title: "Glossário", url: "/dashboard/glossary", icon: BookOpenIcon },
 ]
@@ -63,7 +81,7 @@ export function isActiveUrl(url: string, pathname: string): boolean {
 
 /** Section › page for the header breadcrumb, including nested routes like /customers/123. */
 export function findNavLocation(pathname: string): NavLocation | undefined {
-  for (const section of NAV_MAIN) {
+  for (const section of [...NAV_MAIN, ...NAV_ADMIN]) {
     const page = section.items.find((item) => isActiveUrl(item.url, pathname))
     if (page) return { section, page, flat: false }
     // Flat section: it is its own page.
@@ -71,10 +89,16 @@ export function findNavLocation(pathname: string): NavLocation | undefined {
       return { section, page: section, flat: true }
     }
   }
-  const secondary = NAV_SECONDARY.find((item) => isActiveUrl(item.url, pathname))
+  const secondary = NAV_SECONDARY.find((item) =>
+    isActiveUrl(item.url, pathname)
+  )
   if (secondary) {
     return {
-      section: { title: "Bridge Ops", url: DASHBOARD_HOME, icon: secondary.icon },
+      section: {
+        title: "Bridge Ops",
+        url: DASHBOARD_HOME,
+        icon: secondary.icon,
+      },
       page: secondary,
       flat: false,
     }

@@ -10,17 +10,19 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { requireSession } from "@/lib/auth/session"
+import { getMe } from "@/lib/api/auth"
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [session, cookieStore] = await Promise.all([requireSession(), cookies()])
+  // /me on every render: confirms the token still works (a removed operator or a
+  // changed password is a 401 → login) and tells us whether to show admin nav.
+  const [me, cookieStore] = await Promise.all([getMe(), cookies()])
   const sidebarOpen = cookieStore.get("sidebar_state")?.value !== "false"
 
   return (
     <SidebarProvider defaultOpen={sidebarOpen}>
-      <AppSidebar actor={session.actor} />
+      <AppSidebar actor={me.actor} isAdmin={me.isAdmin} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">

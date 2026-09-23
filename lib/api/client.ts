@@ -11,7 +11,7 @@ interface OpsFetchOptions {
   query?: Record<string, QueryValue>
   /** Attach the operator's bearer token and redirect on 401/503. Default true. */
   auth?: boolean
-  method?: "GET" | "POST"
+  method?: "GET" | "POST" | "DELETE"
   body?: unknown
   /** `/api/ops` for dashboard routes; `root` for `/health`. */
   base?: "ops" | "root"
@@ -37,16 +37,26 @@ export class ApiError extends Error {
  */
 export async function opsFetch<T>(
   path: string,
-  { query, auth = true, method = "GET", body, base = "ops" }: OpsFetchOptions = {}
+  {
+    query,
+    auth = true,
+    method = "GET",
+    body,
+    base = "ops",
+  }: OpsFetchOptions = {}
 ): Promise<T> {
-  const url = new URL(`${env().OPS_API_URL}${base === "ops" ? "/api/ops" : ""}${path}`)
+  const url = new URL(
+    `${env().OPS_API_URL}${base === "ops" ? "/api/ops" : ""}${path}`
+  )
   for (const [key, value] of Object.entries(query ?? {})) {
-    if (value !== undefined && value !== "") url.searchParams.set(key, String(value))
+    if (value !== undefined && value !== "")
+      url.searchParams.set(key, String(value))
   }
 
   const headers = new Headers({ Accept: "application/json" })
   if (body !== undefined) headers.set("Content-Type", "application/json")
-  if (auth) headers.set("Authorization", `Bearer ${(await requireSession()).token}`)
+  if (auth)
+    headers.set("Authorization", `Bearer ${(await requireSession()).token}`)
 
   let response: Response
   try {

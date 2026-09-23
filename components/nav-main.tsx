@@ -25,14 +25,15 @@ import { CaretRightIcon } from "@phosphor-icons/react/ssr"
 
 interface Props {
   items: NavMainItem[]
+  label?: string
 }
 
-export function NavMain({ items }: Props) {
+export function NavMain({ items, label = "Plataforma" }: Props) {
   const pathname = usePathname()
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
           const isActive =
@@ -43,7 +44,11 @@ export function NavMain({ items }: Props) {
           if (item.items.length < 2) {
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.title}
+                  isActive={isActive}
+                >
                   <Link href={item.url}>
                     <item.icon />
                     <span>{item.title}</span>
@@ -56,7 +61,11 @@ export function NavMain({ items }: Props) {
           return (
             <Collapsible key={item.title} asChild defaultOpen={isActive}>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.title}
+                  isActive={isActive}
+                >
                   <Link href={item.url}>
                     <item.icon />
                     <span>{item.title}</span>

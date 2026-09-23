@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,32 +9,35 @@ import { cn } from "cn"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
+import { useRetryCountdown } from "@/hooks/use-retry-countdown"
+import { parseRetrySeconds } from "@/lib/auth/retry"
 import { DASHBOARD_HOME } from "@/lib/constants"
 import { loginSchema } from "@/lib/validations/auth"
 import type { LoginInput, LoginSearch } from "@/types/auth"
-import { ClockCountdownIcon, WarningCircleIcon } from "@phosphor-icons/react/ssr"
+import {
+  ClockCountdownIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react/ssr"
 
 type Props = LoginSearch & Omit<React.ComponentProps<"form">, "onSubmit">
 
 export function LoginForm({ next, reason, className, ...props }: Props) {
   const router = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
-  const [retryIn, setRetryIn] = useState(0)
+  const countdown = useRetryCountdown()
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: { username: "", password: "" },
   })
-
-  // The 429 carries its wait only inside the message; count it down and re-enable.
-  useEffect(() => {
-    if (retryIn <= 0) return
-    const timer = setTimeout(() => setRetryIn((seconds) => seconds - 1), 1000)
-    return () => clearTimeout(timer)
-  }, [retryIn])
 
   async function onSubmit(values: LoginInput) {
     setServerError(null)
@@ -64,13 +67,15 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
 
     const { message } = (await response
       .json()
-      .catch(() => ({ message: "Falha ao entrar. Tente novamente." }))) as { message: string }
-    if (response.status === 429) setRetryIn(parseRetrySeconds(message))
+      .catch(() => ({ message: "Falha ao entrar. Tente novamente." }))) as {
+      message: string
+    }
+    if (response.status === 429) countdown.start(parseRetrySeconds(message))
     setServerError(message)
   }
 
   const submitting = form.formState.isSubmitting
-  const locked = retryIn > 0
+  const locked = countdown.locked
 
   return (
     <form
@@ -90,8 +95,11 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
         {reason === "expired" && (
           <Alert>
             <ClockCountdownIcon />
-            <AlertTitle>Sua sessão expirou</AlertTitle>
-            <AlertDescription>Entre novamente para continuar.</AlertDescription>
+            <AlertTitle>Você foi desconectado</AlertTitle>
+            <AlertDescription>
+              Isso acontece quando a sessão expira, a senha é alterada ou a
+              conta é removida.
+            </AlertDescription>
           </Alert>
         )}
 
@@ -100,10 +108,11 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Usuário</FieldLabel>
+              <FieldLabel htmlFor={field.name}>E-mail</FieldLabel>
               <Input
                 {...field}
                 id={field.name}
+                type="email"
                 autoComplete="username"
                 autoFocus
                 aria-invalid={fieldState.invalid}
@@ -143,16 +152,10 @@ export function LoginForm({ next, reason, className, ...props }: Props) {
         <Field>
           <Button type="submit" disabled={submitting || locked}>
             {submitting && <Spinner />}
-            {locked ? `Tente novamente em ${retryIn}s` : "Entrar"}
+            {locked ? `Tente novamente em ${countdown.retryIn}s` : "Entrar"}
           </Button>
         </Field>
       </FieldGroup>
     </form>
   )
-}
-
-/** "Muitas tentativas de login — tente novamente em 300s" → 300. There is no Retry-After header. */
-function parseRetrySeconds(message: string): number {
-  const match = /(\d+)\s*s\b/.exec(message)
-  return match ? Number(match[1]) : 0
 }

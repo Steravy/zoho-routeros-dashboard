@@ -1,13 +1,14 @@
 import { z } from "zod"
 
+import { EMAIL_MAX } from "@/lib/constants"
 import type { LoginSearch } from "@/types/auth"
 
 export const loginSchema = z.object({
+  // Not trimmed or lower-cased here: the server normalizes the email itself.
   username: z
     .string()
-    .trim()
-    .min(1, "Informe seu usuário")
-    .max(64, "Usuário muito longo"),
+    .min(1, "Informe seu e-mail")
+    .max(EMAIL_MAX, "E-mail muito longo"),
   password: z.string().min(1, "Informe sua senha"),
 })
 

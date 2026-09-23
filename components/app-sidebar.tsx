@@ -17,14 +17,16 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { DASHBOARD_HOME } from "@/lib/constants"
-import { NAV_MAIN, NAV_SECONDARY, NAV_SHORTCUTS } from "@/lib/nav"
+import { NAV_ADMIN, NAV_MAIN, NAV_SECONDARY, NAV_SHORTCUTS } from "@/lib/nav"
 import { CommandIcon } from "@phosphor-icons/react/ssr"
 
 interface Props extends React.ComponentProps<typeof Sidebar> {
   actor: string
+  /** From /me on this render. A UI hint only — every admin route re-checks on the server. */
+  isAdmin: boolean
 }
 
-export function AppSidebar({ actor, ...props }: Props) {
+export function AppSidebar({ actor, isAdmin, ...props }: Props) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -46,11 +48,12 @@ export function AppSidebar({ actor, ...props }: Props) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={NAV_MAIN} />
+        {isAdmin && <NavMain label="Administração" items={NAV_ADMIN} />}
         <NavProjects shortcuts={NAV_SHORTCUTS} />
         <NavSecondary items={NAV_SECONDARY} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser actor={actor} />
+        <NavUser actor={actor} isAdmin={isAdmin} />
       </SidebarFooter>
     </Sidebar>
   )

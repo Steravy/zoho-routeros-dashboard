@@ -52,10 +52,16 @@ export const NEEDS_HUMAN_CODES = [
 ] as const
 
 /** The only failure where an event is genuinely lost — styled louder everywhere. */
-export const LOST_EVENT_CODE = "QUEUE_WRITE_FAILED" satisfies (typeof FAILURE_CODES)[number]
+export const LOST_EVENT_CODE =
+  "QUEUE_WRITE_FAILED" satisfies (typeof FAILURE_CODES)[number]
 
 export const PAGE_LIMIT = 50
 export const REPLAY_GIVE_UP_ATTEMPTS = 50
 export const REPLAY_WARN_ATTEMPTS = 40
 export const PENDING_LIST_CAP = 200
 export const CUSTOMER_QUEUE_CAP = 50
+
+/** Operator credentials — mirrors the backend DTO limits (see docs/dashboard-ui-auth-guide.md). */
+export const PASSWORD_MIN = 12
+export const PASSWORD_MAX = 128
+export const EMAIL_MAX = 64

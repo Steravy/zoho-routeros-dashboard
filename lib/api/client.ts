@@ -11,6 +11,12 @@ interface OpsFetchOptions {
   query?: Record<string, QueryValue>
   /** Attach the operator's bearer token and redirect on 401/503. Default true. */
   auth?: boolean
+  /**
+   * Send this bearer instead of the session cookie's, and *throw* on 401/503
+   * rather than redirect: the caller is deciding whether the token is usable
+   * (the login route verifies a fresh token before it lands in the cookie).
+   */
+  token?: string
   method?: "GET" | "POST" | "DELETE"
   body?: unknown
   /** `/api/ops` for dashboard routes; `root` for `/health`. */
@@ -43,6 +49,7 @@ export async function opsFetch<T>(
     method = "GET",
     body,
     base = "ops",
+    token,
   }: OpsFetchOptions = {}
 ): Promise<T> {
   const url = new URL(
@@ -55,7 +62,8 @@ export async function opsFetch<T>(
 
   const headers = new Headers({ Accept: "application/json" })
   if (body !== undefined) headers.set("Content-Type", "application/json")
-  if (auth)
+  if (token) headers.set("Authorization", `Bearer ${token}`)
+  else if (auth)
     headers.set("Authorization", `Bearer ${(await requireSession()).token}`)
 
   let response: Response
@@ -73,7 +81,15 @@ export async function opsFetch<T>(
   if (response.ok) return (await response.json()) as T
 
   const error = new ApiError(response.status, await readMessages(response))
-  if (auth && response.status === 401) redirect("/login?reason=expired")
+  if (token) throw error
+
+  if (auth && response.status === 401) {
+    // The only trace a "you were signed out" leaves on the server. Never the token.
+    console.warn(
+      `[ops] 401 on ${method} ${path}: ${error.messages.join("; ")} → /login?reason=expired`
+    )
+    redirect("/login?reason=expired")
+  }
   if (auth && response.status === 503) redirect("/disabled")
   throw error
 }

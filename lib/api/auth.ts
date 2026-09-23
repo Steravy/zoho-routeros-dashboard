@@ -20,6 +20,12 @@ export const login = (input: LoginInput) =>
  */
 export const getMe = cache(() => opsFetch<Me>("/me"))
 
+/**
+ * `/me` with an explicit token, before that token is stored anywhere. Throws
+ * `ApiError` on 401/503 instead of redirecting — the login route decides.
+ */
+export const getMeWith = (token: string) => opsFetch<Me>("/me", { token })
+
 /** Returns a fresh session; every token issued before this call is now refused. */
 export const changeMyPassword = (body: {
   currentPassword: string

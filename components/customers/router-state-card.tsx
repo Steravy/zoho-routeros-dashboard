@@ -1,4 +1,5 @@
 import { KeyValueList } from "@/components/shared/key-value-list"
+import { ProfileBadge } from "@/components/shared/profile-badge"
 import { Time } from "@/components/shared/time"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
@@ -14,19 +15,30 @@ import { WarningOctagonIcon } from "@phosphor-icons/react/ssr"
 
 interface Props {
   read: RouterRead<RouterCustomerState>
+  blockedProfile: string
+  /** Lines of this customer that are *not* described by this read. */
+  otherLines: number
 }
 
 /**
  * Fresh or unavailable, never stale — an operator is about to act on this one line,
  * and a remembered profile is what makes them act on the wrong state.
  */
-export function RouterStateCard({ read }: Props) {
+export function RouterStateCard({ read, blockedProfile, otherLines }: Props) {
   const state = read.data
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Estado no roteador</CardTitle>
+        <CardTitle>
+          Estado no roteador
+          {state && (
+            <>
+              {" — "}
+              <code className="font-mono text-sm">{state.username}</code>
+            </>
+          )}
+        </CardTitle>
         <CardDescription>
           {read.available ? (
             <>
@@ -35,6 +47,8 @@ export function RouterStateCard({ read }: Props) {
           ) : (
             "Não foi possível ler"
           )}
+          . Somente esta linha é lida ao vivo.
+          {otherLines > 0 && ` As outras ${otherLines} linhas não são.`}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -62,11 +76,7 @@ export function RouterStateCard({ read }: Props) {
               { label: "Username", value: <code className="font-mono text-xs">{state.username}</code> },
               {
                 label: "Perfil",
-                value: state.profile ? (
-                  <code className="font-mono text-xs">{state.profile}</code>
-                ) : (
-                  "—"
-                ),
+                value: <ProfileBadge profile={state.profile} blockedProfile={blockedProfile} />,
               },
               {
                 label: "Sessão",

@@ -2,14 +2,16 @@ import type {
   ActionOutcome,
   ActionType,
   DriftBucket,
+  EventGroup,
   FailureCode,
   OutageEndReason,
   PendingStatus,
+  ProfileKind,
   SuggestionSource,
   TimeWindow,
   TriggerSource,
 } from "@/types/ops"
-import type { BadgeVariant } from "@/types/ui"
+import type { BadgeVariant, ProfileTone } from "@/types/ui"
 
 export const WINDOW_LABELS: Record<TimeWindow, string> = {
   "24h": "Últimas 24 horas",
@@ -57,6 +59,8 @@ export const FAILURE_CODE_LABELS: Record<FailureCode, string> = {
   REPLAY_GAVE_UP: "Tentativas esgotadas",
   QUEUE_WRITE_FAILED: "Evento perdido",
   INVALID_CUSTOM_FIELDS: "Campos inválidos",
+  LINE_NOT_FOUND: "Linha não encontrada",
+  AMBIGUOUS_LINE: "Linha ambígua",
   UNKNOWN: "Desconhecido",
 }
 
@@ -77,6 +81,9 @@ export const FAILURE_CODE_DESCRIPTIONS: Record<FailureCode, string> = {
   QUEUE_WRITE_FAILED:
     "O roteador estava fora do ar e o evento não pôde ser enfileirado — este evento se perdeu",
   INVALID_CUSTOM_FIELDS: "Webhook legado: os campos personalizados do Zoho eram inutilizáveis",
+  LINE_NOT_FOUND: "Nenhuma linha (contrato ↔ secret) é conhecida para este evento",
+  AMBIGUOUS_LINE:
+    "O cliente tem várias linhas e a invoice não indicou o contrato — precisa de um humano",
   UNKNOWN: "Não classificado",
 }
 
@@ -129,4 +136,31 @@ export const SUGGESTION_SOURCE_DESCRIPTIONS: Record<SuggestionSource, string> = 
   ladder: "A ponte sondou exatamente este nome",
   "digit-match":
     "Contém os dígitos do telefone mas não estava na escada — o nome no roteador provavelmente difere do Zoho",
+}
+
+export const PROFILE_KIND_LABELS: Record<ProfileKind, string> = {
+  plan: "Plano",
+  blocked: "Bloqueado",
+  other: "Outro",
+}
+
+/** The coloured dot beside a profile name — tokens live in `app/globals.css`. */
+export const PROFILE_TONE_DOT: Record<ProfileTone, string> = {
+  fast: "bg-plan-fast",
+  pro: "bg-plan-pro",
+  basic: "bg-plan-basic",
+  blocked: "bg-destructive",
+  other: "bg-profile-other",
+}
+
+export const EVENT_GROUP_LABELS: Record<EventGroup, string> = {
+  customer: "Cliente",
+  recurring_invoice: "Contrato",
+  invoice: "Fatura",
+}
+
+export const EVENT_GROUP_BADGE: Record<EventGroup, BadgeVariant> = {
+  customer: "outline",
+  recurring_invoice: "secondary",
+  invoice: "secondary",
 }

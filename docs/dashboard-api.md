@@ -413,11 +413,17 @@ Live operational flags. **Poll this or read it at boot — it is not static.**
 {
   "dryRun": false,
   "notificationsEnabled": true,
-  "defaultProfile": "Plano_Livre",
+  "defaultProfile": "FAST",
   "blockedProfile": "BLOQUEIO",
+  "planProfiles": ["FAST", "PRO", "BASIC"],
   "sessionTtlMinutes": 720
 }
 ```
+
+`planProfiles` lists the plan profiles in **display order** (Zoho item → router
+profile). It is the source of truth for plan names and ordering: never filter or
+guess names. The dashboard colours plans by name (`lib/constants.ts`
+`PLAN_TONES`); an unknown plan is shown muted.
 
 `dryRun: true` means router writes are currently being **emailed instead of
 executed**. Show a persistent banner when it is on — every "success" the bridge
@@ -585,11 +591,34 @@ Fleet counts, live from the router. `RouterRead<Census>`.
   "data": {
     "secrets": 596, "blocked": 41, "active": 555, "disabled": 12,
     "online": 468, "blockedAndOnline": 33,
-    "byProfile": [ { "profile": "10mbps", "count": 302 }, { "profile": "BLOQUEIO", "count": 41 } ]
+    "byProfile": [
+      { "profile": "FAST", "count": 412, "kind": "plan", "rateLimit": "5M/25M", "existsOnRouter": true },
+      { "profile": "PRO", "count": 97, "kind": "plan", "rateLimit": "5M/100M", "existsOnRouter": true },
+      { "profile": "BASIC", "count": 0, "kind": "plan", "rateLimit": "5M/15M", "existsOnRouter": true },
+      { "profile": "BLOQUEIO", "count": 41, "kind": "blocked", "rateLimit": "1M/1M", "existsOnRouter": true },
+      { "profile": "default", "count": 46, "kind": "other", "rateLimit": null, "existsOnRouter": true },
+      { "profile": "10mbps", "count": 3, "kind": "other", "rateLimit": null, "existsOnRouter": false }
+    ],
+    "plans": [
+      { "profile": "FAST", "count": 412, "kind": "plan", "rateLimit": "5M/25M", "existsOnRouter": true },
+      { "profile": "PRO", "count": 97, "kind": "plan", "rateLimit": "5M/100M", "existsOnRouter": true },
+      { "profile": "BASIC", "count": 0, "kind": "plan", "rateLimit": "5M/15M", "existsOnRouter": true }
+    ]
   }
 }
 ```
 
+- `byProfile` lists **every** profile on the router, count 0 included, plus any
+  profile that secrets still reference but the router no longer has
+  (`existsOnRouter: false` — a stale profile to clean up). It is **already
+  ordered**: plans (in `planProfiles` order), then the blocked profile, then the
+  rest by count. Do not re-sort.
+- `kind` is `plan | blocked | other`. `rateLimit` is the live RouterOS rate
+  limit (`null` → show "—").
+- `plans` is always exactly the plan rows, zeros included — render it directly.
+- If the whole profile list could not be read, **every** row comes with
+  `existsOnRouter: false` and `rateLimit: null`. Show one "profile list
+  unavailable" banner, not a badge per row.
 - `blocked` = sitting on the blocked profile. `disabled` = the RouterOS flag.
   **These are different things** and a customer can be neither, either or both.
 - `active` is simply `secrets − blocked`; it does not consider `disabled`.
@@ -664,7 +693,11 @@ only**.
 {
   "zohoCustomerId": "460000000123456",
   "identity": { "name": "Maria Example", "phones": ["9971234"], "phonesFrom": "last-failed-event" },
-  "mapping": { "routerosUsername": "maria9971234", "lastActiveProfile": "10mbps" },
+  "mapping": { "routerosUsername": "maria9971234", "lastActiveProfile": "FAST" },
+  "lines": [
+    { "zohoRecurringInvoiceId": "460000000654321", "routerosUsername": "maria9971234", "planProfile": "FAST", "lastActiveProfile": "FAST" },
+    { "zohoRecurringInvoiceId": null, "routerosUsername": "maria99712340", "planProfile": null, "lastActiveProfile": "PRO" }
+  ],
   "router": {
     "available": true, "stale": false,
     "fetchedAt": "2026-09-22T14:06:00.000Z", "ageSeconds": 0,
@@ -680,7 +713,7 @@ only**.
       {
         "id": "clx0a1b2c3d4e5f6g7h8",
         "createdAt": "2026-09-22T09:41:03.221Z",
-        "eventType": "inactive", "action": "BLOCK_USER", "source": "ZOHO",
+        "eventType": "customer.state.inactive", "action": "BLOCK_USER", "source": "ZOHO",
         "outcome": "SUCCESS", "failureCode": null, "errorMessage": null,
         "routerosUsername": "maria9971234", "actor": null, "emailSent": true
       }
@@ -690,10 +723,16 @@ only**.
 }
 ```
 
-- `mapping: null` means the bridge has no stored username for this customer —
-  either it never resolved one, or the customer came through the legacy webhook
-  path, which writes no mapping.
-- `router` is **fresh or unavailable, never stale**.
+- `lines` has one entry per PPPoE line — **one Zoho recurring invoice = one
+  line**. `zohoRecurringInvoiceId: null` is a legacy row not yet linked to a
+  contract. The plan is `planProfile`; fall back to `lastActiveProfile`, else "—".
+- `mapping` is the **oldest line**, kept for single-line customers; prefer
+  `lines`. `mapping: null` means the bridge has no stored username for this
+  customer — either it never resolved one, or the customer came through the
+  legacy webhook path, which writes no mapping.
+- `router` is **fresh or unavailable, never stale**, and describes **only the
+  first username** — label it with that username so multi-line customers are not
+  misread.
 - `identity.phones` comes from a stored payload, so it is empty for customers
   nothing has gone wrong for. `phonesFrom` says which payload.
 - `queue` is **capped at 50** with no cursor.
@@ -774,10 +813,25 @@ schema, so this list is exhaustive.
 | `REPLAY_GAVE_UP` | Queued 50 attempts or 72 hours without succeeding |
 | `QUEUE_WRITE_FAILED` | Router was down **and** the event could not be queued — this one is lost |
 | `INVALID_CUSTOM_FIELDS` | Legacy webhook path: the Zoho custom fields were unusable |
+| `LINE_NOT_FOUND` | No line (contract ↔ secret) is known for this event |
+| `AMBIGUOUS_LINE` | Customer has several lines and the invoice named no contract — needs a human |
 | `UNKNOWN` | Unclassified |
 
 `QUEUE_WRITE_FAILED` is the most serious: it is the only case where an event is
 genuinely gone. Worth styling louder than the rest.
+
+### Event types — what Zoho said
+
+`eventType` is a string, not an enum, but new rows use a prefixed form:
+
+| Prefix | Values |
+|---|---|
+| `customer.state.` | `created`, `active`, `inactive`, `cancelled`, `deleted` |
+| `recurring_invoice.state.` | `activated`, `deactivated`, `stopped`, `expired`, `deleted` |
+| `invoice.state.` | `paid`, `overdue` |
+
+Group or badge by the prefix. Old rows may still carry the short legacy form
+(`inactive`); anything without `.state.` is a **customer** event.
 
 ### `ActionType` — what was attempted
 
@@ -871,6 +925,13 @@ mutations are being executed **right now** and says nothing about the past.
 
 ---
 
+### Lifecycle of a line
+
+Register creates the secret **disabled** on the first plan (FAST). A recurring
+invoice activation or a paid invoice enables it; an overdue invoice moves it to
+the blocked profile; a stopped recurring invoice deletes **that line only**.
+`blocked` (profile) ≠ `disabled` (flag) — unchanged.
+
 ## 9. The seven screens
 
 The API was shaped around these seven questions. Layout is yours; the mapping
@@ -944,9 +1005,10 @@ big orphan number is read in proportion.
 
 `GET /customers/:id` (one request) · `GET /customers/search` to get here
 
-Identity, mapping, live router state, outcome counts, queued events, timeline.
-The router block is fresh or unavailable — if it is unavailable, **say so
-loudly**, because an operator is about to act on this line.
+Identity, mapping, lines, live router state, outcome counts, queued events,
+timeline. The router block is fresh or unavailable — if it is unavailable, **say
+so loudly**, because an operator is about to act on this line. It describes the
+first line only; the Lines section lists every line with its plan and contract.
 
 *Empty:* 404 → "no customer with that Zoho id".
 *Traps:* `mapping: null` is normal for legacy customers; `queue` caps at 50;
@@ -956,8 +1018,10 @@ loudly**, because an operator is about to act on this line.
 
 `GET /router/census`
 
-Fleet totals and the profile breakdown. A good place for the stale banner, since
-this is the screen most likely to be served from a remembered copy.
+Fleet totals, one tile per plan (`plans`, with `rateLimit`), the profile
+breakdown chart and the full profile table (`byProfile`, styled by `kind`). A
+good place for the stale banner, since this is the screen most likely to be
+served from a remembered copy.
 
 *Traps:* `blockedAndOnline` is expected; `blocked` ≠ `disabled`.
 

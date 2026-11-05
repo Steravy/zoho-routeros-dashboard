@@ -24,6 +24,8 @@ export const FAILURE_CODES = [
   "REPLAY_GAVE_UP",
   "QUEUE_WRITE_FAILED",
   "INVALID_CUSTOM_FIELDS",
+  "LINE_NOT_FOUND",
+  "AMBIGUOUS_LINE",
   "UNKNOWN",
 ] as const
 
@@ -44,6 +46,25 @@ export const PENDING_STATUSES = ["PENDING", "REPLAYED", "GAVE_UP"] as const
 export const OUTAGE_END_REASONS = ["RESTORED", "ASSUMED_AT_RESTART"] as const
 export const DRIFT_BUCKETS = ["orphans", "missing", "ambiguous"] as const
 export const SUGGESTION_SOURCES = ["ladder", "digit-match"] as const
+
+/** `kind` of a census profile row — the API decides, the UI only styles. */
+export const PROFILE_KINDS = ["plan", "blocked", "other"] as const
+
+/** Colour slots a profile can wear. `blocked` is the suspension profile; `other` is everything unknown. */
+export const PROFILE_TONES = ["fast", "pro", "basic", "blocked", "other"] as const
+
+/**
+ * Plan name → colour slot. Names verified against the router on 2026-11-02
+ * (`/config` `planProfiles`: FAST, PRO, BASIC). An unknown plan falls back to `other`.
+ */
+export const PLAN_TONES: Record<string, "fast" | "pro" | "basic"> = {
+  FAST: "fast",
+  PRO: "pro",
+  BASIC: "basic",
+}
+
+/** Prefix of a Zoho `eventType` (`customer.state.active`, `invoice.state.paid`, …). */
+export const EVENT_GROUPS = ["customer", "recurring_invoice", "invoice"] as const
 
 /** Failure codes whose fix is a human linking a secret by hand. */
 export const NEEDS_HUMAN_CODES = [

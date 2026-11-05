@@ -19,8 +19,10 @@ export async function ProfileBreakdown() {
       <CardHeader>
         <CardTitle>Secrets por perfil</CardTitle>
         <CardDescription>
-          {formatCount(data.byProfile.length)} perfis. O perfil bloqueado,{" "}
-          <code className="font-mono">{config.blockedProfile}</code>, está destacado.
+          {formatCount(data.byProfile.length)} perfis, na ordem do roteador:
+          planos em cor,{" "}
+          <code className="font-mono">{config.blockedProfile}</code> em
+          vermelho, demais perfis em cinza.
         </CardDescription>
       </CardHeader>
       <CardContent>

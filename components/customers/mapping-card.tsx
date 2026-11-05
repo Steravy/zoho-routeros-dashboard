@@ -1,5 +1,6 @@
 import { CopyButton } from "@/components/shared/copy-button"
 import { KeyValueList } from "@/components/shared/key-value-list"
+import { ProfileBadge } from "@/components/shared/profile-badge"
 import {
   Card,
   CardContent,
@@ -11,15 +12,16 @@ import type { CustomerMapping } from "@/types/ops"
 
 interface Props {
   mapping: CustomerMapping | null
+  blockedProfile: string
 }
 
 /** `null` is normal for legacy-webhook customers — that path never wrote a mapping. */
-export function MappingCard({ mapping }: Props) {
+export function MappingCard({ mapping, blockedProfile }: Props) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Mapeamento</CardTitle>
-        <CardDescription>O username que a ponte salvou para este cliente.</CardDescription>
+        <CardDescription>O username da linha mais antiga; veja Linhas para todas.</CardDescription>
       </CardHeader>
       <CardContent>
         {mapping ? (
@@ -37,7 +39,7 @@ export function MappingCard({ mapping }: Props) {
               {
                 label: "Último perfil ativo",
                 value: mapping.lastActiveProfile ? (
-                  <code className="font-mono text-xs">{mapping.lastActiveProfile}</code>
+                  <ProfileBadge profile={mapping.lastActiveProfile} blockedProfile={blockedProfile} />
                 ) : (
                   <span className="text-muted-foreground">Não registrado</span>
                 ),

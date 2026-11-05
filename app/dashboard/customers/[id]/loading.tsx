@@ -17,6 +17,7 @@ export default function CustomerLoading() {
         <DetailCardSkeleton rows={2} />
         <DetailCardSkeleton rows={6} />
       </div>
+      <DetailCardSkeleton rows={2} />
       <div className="flex flex-wrap gap-2">
         {Array.from({ length: 6 }, (_, index) => (
           <Skeleton key={index} className="h-9 w-28 rounded-lg" />

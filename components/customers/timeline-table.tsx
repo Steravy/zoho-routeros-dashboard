@@ -1,4 +1,5 @@
 import { CursorPagination } from "@/components/shared/cursor-pagination"
+import { EventTypeBadge } from "@/components/shared/event-type-badge"
 import { FailureCodeBadge } from "@/components/shared/failure-code-badge"
 import { OutcomeBadge } from "@/components/shared/outcome-badge"
 import { Time } from "@/components/shared/time"
@@ -59,8 +60,9 @@ export function TimelineTable({ timeline }: Props) {
                     </TableCell>
                     <TableCell>
                       <div>{ACTION_LABELS[item.action]}</div>
-                      <div className="text-xs text-muted-foreground">
-                        <span className="font-mono">{item.eventType}</span> · {SOURCE_LABELS[item.source]}
+                      <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                        <EventTypeBadge eventType={item.eventType} />
+                        <span>· {SOURCE_LABELS[item.source]}</span>
                       </div>
                     </TableCell>
                     <TableCell>

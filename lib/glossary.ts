@@ -7,7 +7,13 @@ export const GLOSSARY: { term: string; meaning: string }[] = [
   },
   {
     term: "Perfil",
-    meaning: "O plano de banda/serviço associado a um secret, ex.: 10mbps.",
+    meaning:
+      "O plano de banda/serviço associado a um secret: FAST, PRO ou BASIC. BLOQUEIO é o perfil de suspensão.",
+  },
+  {
+    term: "Linha",
+    meaning:
+      "Um contrato ↔ um secret. Um recurring invoice do Zoho é uma linha; um cliente com vários contratos tem várias linhas, cada uma com seu username.",
   },
   {
     term: "Desabilitado",

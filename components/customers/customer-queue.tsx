@@ -1,3 +1,4 @@
+import { EventTypeBadge } from "@/components/shared/event-type-badge"
 import { Time } from "@/components/shared/time"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -57,7 +58,9 @@ export function CustomerQueue({ items }: Props) {
             <TableBody>
               {items.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-mono text-xs">{item.eventType}</TableCell>
+                  <TableCell>
+                    <EventTypeBadge eventType={item.eventType} />
+                  </TableCell>
                   <TableCell>
                     <Badge variant={STATUS_VARIANT[item.status]}>
                       {PENDING_STATUS_LABELS[item.status]}

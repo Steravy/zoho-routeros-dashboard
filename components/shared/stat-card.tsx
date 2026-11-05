@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 
 interface Props {
-  label: string
+  label: ReactNode
   value: ReactNode
   /** One line under the number: what it means or what to do about it. */
   hint?: ReactNode

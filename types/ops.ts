@@ -1,11 +1,13 @@
 import type {
   ACTIONS,
   DRIFT_BUCKETS,
+  EVENT_GROUPS,
   FAILURE_CODES,
   NEEDS_HUMAN_CODES,
   OUTAGE_END_REASONS,
   OUTCOMES,
   PENDING_STATUSES,
+  PROFILE_KINDS,
   SOURCES,
   SUGGESTION_SOURCES,
   WINDOWS,
@@ -21,6 +23,8 @@ export type OutageEndReason = (typeof OUTAGE_END_REASONS)[number]
 export type DriftBucket = (typeof DRIFT_BUCKETS)[number]
 export type SuggestionSource = (typeof SUGGESTION_SOURCES)[number]
 export type NeedsHumanCode = (typeof NEEDS_HUMAN_CODES)[number]
+export type ProfileKind = (typeof PROFILE_KINDS)[number]
+export type EventGroup = (typeof EVENT_GROUPS)[number]
 
 /** Cursor-paged list. `nextCursor` is null on the last page; only ever send back a cursor you were given. */
 export interface Page<T> {
@@ -55,6 +59,8 @@ export interface OpsConfig {
   notificationsEnabled: boolean
   defaultProfile: string
   blockedProfile: string
+  /** Plan profiles in display order (Zoho item → router profile). The source of truth for plan names. */
+  planProfiles: string[]
   sessionTtlMinutes: number
 }
 
@@ -159,9 +165,14 @@ export interface OutagesResponse {
   items: OutageItem[]
 }
 
-export interface ProfileCount {
+export interface CensusProfile {
   profile: string
   count: number
+  kind: ProfileKind
+  /** RouterOS rate limit, e.g. "5M/25M". null when the profile list could not be read. */
+  rateLimit: string | null
+  /** false = secrets reference a profile the router no longer has, or the profile list could not be read. */
+  existsOnRouter: boolean
 }
 
 export interface Census {
@@ -175,7 +186,10 @@ export interface Census {
   online: number
   /** Expected to be non-zero: blocked customers reconnect into the throttled profile. */
   blockedAndOnline: number
-  byProfile: ProfileCount[]
+  /** Every router profile (count 0 included) plus any profile secrets still reference. Already ordered: plans, blocked, rest by count — never re-sort. */
+  byProfile: CensusProfile[]
+  /** Exactly the plan rows, in `planProfiles` order, zeros included. */
+  plans: CensusProfile[]
 }
 
 export interface CustomerHit {
@@ -195,6 +209,15 @@ export interface CustomerIdentity {
 
 export interface CustomerMapping {
   routerosUsername: string
+  lastActiveProfile: string | null
+}
+
+/** One PPPoE line — one Zoho recurring invoice is one line. */
+export interface CustomerLine {
+  /** null = legacy row not yet linked to a contract. */
+  zohoRecurringInvoiceId: string | null
+  routerosUsername: string
+  planProfile: string | null
   lastActiveProfile: string | null
 }
 
@@ -236,9 +259,11 @@ export interface TimelineItem {
 export interface CustomerDetail {
   zohoCustomerId: string
   identity: CustomerIdentity
-  /** null = no stored username; normal for legacy-webhook customers. */
+  /** The oldest line, kept for single-line customers; prefer `lines`. null = no stored username (legacy webhook). */
   mapping: CustomerMapping | null
-  /** Fresh or unavailable — never stale. */
+  /** Every line of the customer, one per recurring invoice. */
+  lines: CustomerLine[]
+  /** Fresh or unavailable — never stale. Describes the first line's username only. */
   router: RouterRead<RouterCustomerState>
   counts: OutcomeCounts
   /** Capped at 50, no cursor. */

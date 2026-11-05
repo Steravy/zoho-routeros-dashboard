@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import { EmptyState } from "@/components/shared/empty-state"
+import { EventTypeBadge } from "@/components/shared/event-type-badge"
 import { Time } from "@/components/shared/time"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -63,7 +64,9 @@ export function QueueTable({ items }: Props) {
                       {item.zohoCustomerId}
                     </Link>
                   </TableCell>
-                  <TableCell className="font-mono text-xs">{item.eventType}</TableCell>
+                  <TableCell>
+                    <EventTypeBadge eventType={item.eventType} />
+                  </TableCell>
                   <TableCell className="text-right">
                     <Badge variant={nearGiveUp ? "destructive" : "outline"}>
                       {item.attempts}/{REPLAY_GIVE_UP_ATTEMPTS}

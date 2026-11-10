@@ -2,19 +2,30 @@ import { z } from "zod"
 
 import {
   ACTIONS,
+  CUSTOMER_TABS,
+  DEFAULT_CUSTOMER_TAB,
+  DEFAULT_GRANULARITY,
+  DEFAULT_TOP_LIMIT,
+  DEFAULT_TOP_PERIOD,
   DEFAULT_WINDOW,
   DRIFT_BUCKETS,
   FAILURE_CODES,
+  GRANULARITIES,
   NEEDS_HUMAN_CODES,
   SOURCES,
+  TOP_LIMITS,
+  TOP_PERIODS,
   WINDOWS,
 } from "@/lib/constants"
 import type {
+  CustomerPageQuery,
   CustomerSearchQuery,
   CursorQuery,
   DriftQuery,
   FailuresQuery,
   NeedsHumanQuery,
+  TopConsumersQuery,
+  UsageQuery,
   WindowQuery,
 } from "@/types/query"
 
@@ -63,3 +74,39 @@ export const customerSearchQuerySchema = z.object({
   q: z.string().trim().min(2).max(120).optional().catch(undefined),
   cursor: cursorField,
 }) satisfies z.ZodType<CustomerSearchQuery>
+
+/* ── Usage ── */
+
+// Calendar dates only; whether the pair makes a usable range is `lib/usage/range.ts`'s call.
+const dateField = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .optional()
+  .catch(undefined)
+
+const usageFields = {
+  g: z.enum(GRANULARITIES).catch(DEFAULT_GRANULARITY),
+  // Preset keys differ per granularity; an unknown one resolves to that granularity's default.
+  range: z.string().max(8).optional().catch(undefined),
+  from: dateField,
+  to: dateField,
+}
+
+export const usageQuerySchema = z.object(usageFields) satisfies z.ZodType<UsageQuery>
+
+export const customerPageQuerySchema = z.object({
+  ...usageFields,
+  tab: z.enum(CUSTOMER_TABS).catch(DEFAULT_CUSTOMER_TAB),
+  line: z.string().trim().min(1).max(120).optional().catch(undefined),
+  cursor: cursorField,
+}) satisfies z.ZodType<CustomerPageQuery>
+
+export const topConsumersQuerySchema = z.object({
+  top: z.enum(TOP_PERIODS).catch(DEFAULT_TOP_PERIOD),
+  topFrom: dateField,
+  topTo: dateField,
+  limit: z.coerce
+    .number()
+    .pipe(z.union(TOP_LIMITS.map((limit) => z.literal(limit))))
+    .catch(DEFAULT_TOP_LIMIT),
+}) satisfies z.ZodType<TopConsumersQuery>

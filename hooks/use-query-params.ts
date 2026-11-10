@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback } from "react"
+import { useCallback, useTransition } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 type Patch = Record<string, string | undefined>
@@ -15,6 +15,8 @@ export function useQueryParams() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  // The old screen stays up while the server renders the new one; `pending` lets a control say so.
+  const [pending, startTransition] = useTransition()
 
   const set = useCallback(
     (patch: Patch, { keepCursor = false }: SetOptions = {}) => {
@@ -25,10 +27,10 @@ export function useQueryParams() {
         else next.delete(key)
       }
       const query = next.toString()
-      router.push(query ? `${pathname}?${query}` : pathname)
+      startTransition(() => router.push(query ? `${pathname}?${query}` : pathname))
     },
     [router, pathname, searchParams]
   )
 
-  return { searchParams, set }
+  return { searchParams, set, pending }
 }

@@ -1,20 +1,19 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
-import { CustomerQueue } from "@/components/customers/customer-queue"
-import { IdentityCard } from "@/components/customers/identity-card"
-import { LinesCard } from "@/components/customers/lines-card"
-import { MappingCard } from "@/components/customers/mapping-card"
-import { OutcomeCounts } from "@/components/customers/outcome-counts"
-import { RouterStateCard } from "@/components/customers/router-state-card"
-import { TimelineTable } from "@/components/customers/timeline-table"
+import { CustomerTabs } from "@/components/customers/customer-tabs"
+import { HistoryTab } from "@/components/customers/tabs/history-tab"
+import { OverviewTab } from "@/components/customers/tabs/overview-tab"
+import { UsageTab } from "@/components/customers/tabs/usage-tab"
 import { PageHeader } from "@/components/layout/page-header"
+import { CustomerOverviewSkeleton } from "@/components/skeletons/customer-overview-skeleton"
 import { Button } from "@/components/ui/button"
 import { ApiError } from "@/lib/api/client"
-import { getConfig, getCustomer } from "@/lib/api/ops"
+import { getCustomer } from "@/lib/api/ops"
 import { requireSession } from "@/lib/auth/session"
-import { cursorQuerySchema } from "@/lib/validations/query"
-import type { CustomerDetail, OpsConfig } from "@/types/ops"
+import { customerPageQuerySchema } from "@/lib/validations/query"
+import type { CustomerDetail } from "@/types/ops"
 import type { SearchParams } from "@/types/query"
 import { UserFocusIcon } from "@phosphor-icons/react/ssr"
 
@@ -26,14 +25,13 @@ interface Props {
 export default async function CustomerPage({ params, searchParams }: Props) {
   await requireSession()
   const { id } = await params
-  const { cursor } = cursorQuerySchema.parse(await searchParams)
+  const query = customerPageQuerySchema.parse(await searchParams)
 
-  // One request returns the whole story; the cursor pages the timeline only.
-  // `/config` names the blocked profile so every profile here can wear its tone.
+  // One request names the customer and feeds Resumo and Histórico; the cursor
+  // pages the timeline, so it only travels on that tab. Consumo loads on its own.
   let customer: CustomerDetail
-  let config: OpsConfig
   try {
-    ;[customer, config] = await Promise.all([getCustomer(id, cursor), getConfig()])
+    customer = await getCustomer(id, query.tab === "historico" ? query.cursor : undefined)
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) notFound()
     throw error
@@ -53,23 +51,14 @@ export default async function CustomerPage({ params, searchParams }: Props) {
           </Button>
         }
       />
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <IdentityCard zohoCustomerId={customer.zohoCustomerId} identity={customer.identity} />
-        <MappingCard mapping={customer.mapping} blockedProfile={config.blockedProfile} />
-        <RouterStateCard
-          read={customer.router}
-          blockedProfile={config.blockedProfile}
-          otherLines={Math.max(0, customer.lines.length - 1)}
-        />
-      </div>
-      <LinesCard
-        lines={customer.lines}
-        blockedProfile={config.blockedProfile}
-        liveUsername={customer.router.data?.username ?? customer.mapping?.routerosUsername ?? null}
-      />
-      <OutcomeCounts counts={customer.counts} />
-      <CustomerQueue items={customer.queue} />
-      <TimelineTable timeline={customer.timeline} />
+      <CustomerTabs value={query.tab} />
+      {query.tab === "resumo" && (
+        <Suspense fallback={<CustomerOverviewSkeleton />}>
+          <OverviewTab customer={customer} />
+        </Suspense>
+      )}
+      {query.tab === "consumo" && <UsageTab customer={customer} query={query} />}
+      {query.tab === "historico" && <HistoryTab customer={customer} />}
     </>
   )
 }

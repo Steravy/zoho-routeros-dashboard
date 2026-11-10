@@ -24,6 +24,8 @@
     --color-plan-pro: var(--plan-pro);
     --color-plan-basic: var(--plan-basic);
     --color-profile-other: var(--profile-other);
+    --color-usage-download: var(--usage-download);
+    --color-usage-upload: var(--usage-upload);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -80,6 +82,9 @@
     --plan-pro: #2a78d6;
     --plan-basic: #9a9a8b;
     --profile-other: var(--chart-1);
+    /* Usage series — the validated categorical pair; see AGENTS.md. */
+    --usage-download: #2a78d6;
+    --usage-upload: #eb6834;
     --radius: 0.45rem;
     --sidebar: oklch(0.988 0.003 106.5);
     --sidebar-foreground: oklch(0.153 0.006 107.1);
@@ -119,6 +124,8 @@
     --plan-pro: #3987e5;
     --plan-basic: #abab9c;
     --profile-other: var(--chart-4);
+    --usage-download: #3987e5;
+    --usage-upload: #d95926;
     --sidebar: oklch(0.228 0.013 107.4);
     --sidebar-foreground: oklch(0.988 0.003 106.5);
     --sidebar-primary: oklch(0.488 0.243 264.376);

@@ -86,3 +86,68 @@ export const CUSTOMER_QUEUE_CAP = 50
 export const PASSWORD_MIN = 12
 export const PASSWORD_MAX = 128
 export const EMAIL_MAX = 64
+
+/* ── Usage ── */
+
+export const GRANULARITIES = ["hour", "day", "week", "month"] as const
+export const DEFAULT_GRANULARITY = "day" satisfies (typeof GRANULARITIES)[number]
+
+/**
+ * Range presets per granularity, default first. `buckets` is how many buckets the
+ * chart draws, the one in progress included — all far below `MAX_USAGE_BUCKETS`.
+ */
+export const USAGE_PRESETS = {
+  hour: [
+    { key: "24h", buckets: 24 },
+    { key: "48h", buckets: 48 },
+    { key: "7d", buckets: 168 },
+  ],
+  day: [
+    { key: "7d", buckets: 7 },
+    { key: "30d", buckets: 30 },
+    { key: "90d", buckets: 90 },
+  ],
+  week: [
+    { key: "12w", buckets: 12 },
+    { key: "26w", buckets: 26 },
+    { key: "52w", buckets: 52 },
+  ],
+  month: [
+    { key: "6m", buckets: 6 },
+    { key: "12m", buckets: 12 },
+    { key: "24m", buckets: 24 },
+  ],
+} as const satisfies Record<
+  (typeof GRANULARITIES)[number],
+  readonly { key: string; buckets: number }[]
+>
+
+/** The backend answers 400 above this; checked here first so the operator gets a sentence, not an error. */
+export const MAX_USAGE_BUCKETS = 1000
+
+/** Shortest possible bucket per granularity, as the backend counts them (a month is 28 days). */
+export const MIN_BUCKET_MS = {
+  hour: 3_600_000,
+  day: 86_400_000,
+  week: 7 * 86_400_000,
+  month: 28 * 86_400_000,
+} as const satisfies Record<(typeof GRANULARITIES)[number], number>
+
+/** Top-consumers periods. The first three are calendar periods in the bridge's timezone; weeks start Monday. */
+export const TOP_PERIODS = ["today", "week", "month", "30d", "custom"] as const
+export const DEFAULT_TOP_PERIOD = "30d" satisfies (typeof TOP_PERIODS)[number]
+export const TOP_LIMITS = [20, 50, 100] as const
+export const DEFAULT_TOP_LIMIT = 20 satisfies (typeof TOP_LIMITS)[number]
+/** Rows of the ranking shown on the Clientes page. */
+export const TOP_PREVIEW_LIMIT = 10
+
+/** Bucket boundaries follow this zone. Every response repeats it as `timezone`; this is only for building requests. */
+export const USAGE_TIMEZONE = "Atlantic/Cape_Verde"
+
+/** Each live read queries the router — never poll faster than this. */
+export const LIVE_POLL_MS = 5000
+/** Readings kept in memory for the live sparkline (~5 min). Never stored. */
+export const LIVE_HISTORY = 60
+
+export const CUSTOMER_TABS = ["resumo", "consumo", "historico"] as const
+export const DEFAULT_CUSTOMER_TAB = "resumo" satisfies (typeof CUSTOMER_TABS)[number]

@@ -1,7 +1,7 @@
-import { DetailCardSkeleton } from "@/components/skeletons/detail-card-skeleton"
-import { TableSkeleton } from "@/components/skeletons/table-skeleton"
+import { CustomerOverviewSkeleton } from "@/components/skeletons/customer-overview-skeleton"
 import { Skeleton } from "@/components/ui/skeleton"
 
+/** Header, tab strip, then the default tab — the tab in the URL is not known here. */
 export default function CustomerLoading() {
   return (
     <>
@@ -12,19 +12,12 @@ export default function CustomerLoading() {
         </div>
         <Skeleton className="h-8 w-36" />
       </div>
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <DetailCardSkeleton rows={3} />
-        <DetailCardSkeleton rows={2} />
-        <DetailCardSkeleton rows={6} />
+      <div className="flex gap-4">
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-20" />
       </div>
-      <DetailCardSkeleton rows={2} />
-      <div className="flex flex-wrap gap-2">
-        {Array.from({ length: 6 }, (_, index) => (
-          <Skeleton key={index} className="h-9 w-28 rounded-lg" />
-        ))}
-      </div>
-      <DetailCardSkeleton rows={1} />
-      <TableSkeleton columns={6} rows={5} />
+      <CustomerOverviewSkeleton />
     </>
   )
 }

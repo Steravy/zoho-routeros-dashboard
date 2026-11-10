@@ -1,5 +1,6 @@
 import {
   BookOpenIcon,
+  ChartBarIcon,
   GitDiffIcon,
   HardDrivesIcon,
   HeartbeatIcon,
@@ -46,6 +47,12 @@ export const NAV_MAIN: NavMainItem[] = [
     title: "Clientes",
     url: "/dashboard/customers",
     icon: UsersIcon,
+    items: [],
+  },
+  {
+    title: "Consumo",
+    url: "/dashboard/usage",
+    icon: ChartBarIcon,
     items: [],
   },
 ]

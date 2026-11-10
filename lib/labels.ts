@@ -4,6 +4,7 @@ import type {
   DriftBucket,
   EventGroup,
   FailureCode,
+  Granularity,
   OutageEndReason,
   PendingStatus,
   ProfileKind,
@@ -11,7 +12,12 @@ import type {
   TimeWindow,
   TriggerSource,
 } from "@/types/ops"
-import type { BadgeVariant, ProfileTone } from "@/types/ui"
+import type {
+  BadgeVariant,
+  CustomerTab,
+  ProfileTone,
+  TopPeriod,
+} from "@/types/ui"
 
 export const WINDOW_LABELS: Record<TimeWindow, string> = {
   "24h": "Últimas 24 horas",
@@ -164,3 +170,65 @@ export const EVENT_GROUP_BADGE: Record<EventGroup, BadgeVariant> = {
   recurring_invoice: "secondary",
   invoice: "secondary",
 }
+
+/* ── Usage ── */
+
+export const GRANULARITY_LABELS: Record<Granularity, string> = {
+  hour: "Hora",
+  day: "Dia",
+  week: "Semana",
+  month: "Mês",
+}
+
+/** "Consumo por …" */
+export const GRANULARITY_UNIT_LABELS: Record<Granularity, string> = {
+  hour: "hora",
+  day: "dia",
+  week: "semana",
+  month: "mês",
+}
+
+/** Keyed by the preset keys of `USAGE_PRESETS`. */
+export const USAGE_PRESET_LABELS: Record<string, { short: string; long: string }> = {
+  "24h": { short: "24 h", long: "Últimas 24 horas" },
+  "48h": { short: "48 h", long: "Últimas 48 horas" },
+  "7d": { short: "7 d", long: "Últimos 7 dias" },
+  "30d": { short: "30 d", long: "Últimos 30 dias" },
+  "90d": { short: "90 d", long: "Últimos 90 dias" },
+  "12w": { short: "12 sem", long: "Últimas 12 semanas" },
+  "26w": { short: "26 sem", long: "Últimas 26 semanas" },
+  "52w": { short: "52 sem", long: "Últimas 52 semanas" },
+  "6m": { short: "6 m", long: "Últimos 6 meses" },
+  "12m": { short: "12 m", long: "Últimos 12 meses" },
+  "24m": { short: "24 m", long: "Últimos 24 meses" },
+}
+
+export const TOP_PERIOD_LABELS: Record<TopPeriod, string> = {
+  today: "Hoje",
+  week: "Esta semana",
+  month: "Este mês",
+  "30d": "Últimos 30 dias",
+  custom: "Personalizado",
+}
+
+export const CUSTOMER_TAB_LABELS: Record<CustomerTab, string> = {
+  resumo: "Resumo",
+  consumo: "Consumo",
+  historico: "Histórico",
+}
+
+/** Shown wherever usage figures appear — they are not billing-grade. */
+export const USAGE_APPROXIMATE_HINT =
+  "Aproximado. Registrado a cada 5 minutos; alguns minutos de tráfego podem se perder quando um cliente desconecta."
+
+const TIMEZONE_LABELS: Record<string, string> = {
+  "Atlantic/Cape_Verde": "Cabo Verde",
+}
+
+/** Human name of the timezone a usage response was bucketed in; an unknown zone shows its IANA id. */
+export function timezoneLabel(timeZone: string): string {
+  return TIMEZONE_LABELS[timeZone] ?? timeZone.replace(/_/g, " ")
+}
+
+export const TOO_MANY_BUCKETS_MESSAGE =
+  "Este intervalo tem períodos demais para a granularidade escolhida (máximo de 1000). Encurte o intervalo ou escolha uma granularidade maior."

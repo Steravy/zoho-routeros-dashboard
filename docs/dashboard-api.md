@@ -782,6 +782,99 @@ which secrets could be theirs.
 
 ---
 
+### Usage — how the numbers are made
+
+RouterOS keeps no usage history, so the bridge builds one: every **5 minutes**
+it reads the byte counters of each online customer's `<pppoe-USERNAME>`
+interface (read-only) and books what moved since the previous read into hourly
+buckets. Consequences the UI must respect:
+
+- **History starts when sampling was deployed.** Every usage response carries
+  `samplingSince` (oldest sampled hour, `null` = nothing yet). Draw buckets
+  before it as "no data", not as zero.
+- **Approximate, not billing-grade.** Traffic between the last read and a
+  disconnect (up to ~5 min per session) is lost; bytes are booked into the hour
+  they were *read*, not the minute they moved. After the bridge itself was down
+  for more than ~15 min, sessions it did not see start only count from their
+  next read.
+- `downloadBytes` = router → customer, `uploadBytes` = customer → router,
+  `totalBytes` = both. All plain numbers of **bytes** — format them yourself.
+- Day/week/month buckets follow **`Atlantic/Cape_Verde`** (returned as
+  `timezone`); weeks start Monday. `start` is the bucket start as a UTC instant.
+- Usage is per **RouterOS username**. A customer with several lines gets one
+  series per line plus a `total`.
+- Series are **zero-filled**: every bucket in the range is present, so the
+  `points` array can go straight onto a chart's x-axis.
+
+Range parameters, shared by the series endpoints: `granularity` =
+`hour|day|week|month` (default `day`); `from` (inclusive, widened to the start
+of its bucket — the response's `from` is that widened value) and `to`
+(exclusive, default now), ISO-8601. Defaults when `from` is omitted: 48 h of
+hours, 30 days, 12 weeks, 12 months. More than 1 000 buckets, or `from` ≥
+`to` → **400**.
+
+### `GET /customers/:zohoCustomerId/usage?granularity=&from=&to=`
+
+```json
+{
+  "zohoCustomerId": "460000000123456",
+  "granularity": "day",
+  "from": "2026-10-11T01:00:00.000Z", "to": "2026-11-10T14:00:00.000Z",
+  "timezone": "Atlantic/Cape_Verde",
+  "samplingSince": "2026-11-03T12:00:00.000Z",
+  "lines": [
+    {
+      "routerosUsername": "maria9971234", "zohoRecurringInvoiceId": "4600000009876",
+      "totals": { "downloadBytes": 48211022336, "uploadBytes": 3120443392, "totalBytes": 51331465728 },
+      "points": [
+        { "start": "2026-11-09T01:00:00.000Z", "downloadBytes": 7012345678, "uploadBytes": 401234567, "totalBytes": 7413580245 }
+      ]
+    }
+  ],
+  "total": { "totals": { "…": "all lines summed" }, "points": [ "…" ] }
+}
+```
+
+- `404` under the same rule as `GET /customers/:zohoCustomerId`.
+- A customer known only from the audit log with no username → `lines: []`.
+
+### `GET /customers/:zohoCustomerId/usage/live`
+
+A `RouterRead`, **fresh or unavailable, never stale**:
+
+```json
+{
+  "available": true, "stale": false, "fetchedAt": "2026-11-10T14:02:11.000Z", "ageSeconds": 0,
+  "data": {
+    "lines": [
+      {
+        "routerosUsername": "maria9971234", "online": true,
+        "uptime": "1d3h12m5s", "address": "10.10.4.17",
+        "sessionDownloadBytes": 2310442112, "sessionUploadBytes": 120334411,
+        "downloadBitsPerSecond": 8423000, "uploadBitsPerSecond": 512000
+      }
+    ]
+  }
+}
+```
+
+- The `session*` counters cover the current session only — they restart on
+  every reconnect. Offline lines carry `null`s.
+- The rate is a one-second sample; poll every few seconds at most, and only
+  while the panel is open.
+
+### `GET /usage/total?granularity=&from=&to=`
+
+Whole network: `totals` plus zero-filled `points`, each with `activeUsers` =
+usernames with any traffic in that bucket. Same range rules.
+
+### `GET /usage/top?from=&to=&limit=`
+
+Ranking by `totalBytes` over `[from, to)` (default last 30 days, `limit` 1–100,
+default 20). Each item: `routerosUsername`, `zohoCustomerId` and `name` (both
+`null` for a secret no customer is mapped to), and the three byte totals.
+Raw hourly range — no granularity, no widening.
+
 ## 7. Enum reference
 
 Use these as your label sets and filter options. They come from the database

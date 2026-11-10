@@ -3,6 +3,7 @@ import type {
   DRIFT_BUCKETS,
   EVENT_GROUPS,
   FAILURE_CODES,
+  GRANULARITIES,
   NEEDS_HUMAN_CODES,
   OUTAGE_END_REASONS,
   OUTCOMES,
@@ -324,4 +325,92 @@ export interface Drift {
   counts: Record<DriftBucket, number>
   bucket: DriftBucket
   page: Page<DriftItem>
+}
+
+/* ── Usage (docs/dashboard-api.md → "Usage — how the numbers are made") ── */
+
+export type Granularity = (typeof GRANULARITIES)[number]
+
+/** Plain numbers of **bytes**. Download = router → customer, upload = customer → router. */
+export interface UsageTotals {
+  downloadBytes: number
+  uploadBytes: number
+  totalBytes: number
+}
+
+export interface UsagePoint extends UsageTotals {
+  /** Bucket start, a UTC instant. Bucket boundaries follow the response's `timezone`. */
+  start: string
+}
+
+export interface NetworkUsagePoint extends UsagePoint {
+  /** Usernames with any traffic in the bucket. */
+  activeUsers: number
+}
+
+/** Zero-filled: every bucket of the range is present, in order. Never re-bucket. */
+export interface UsageSeries {
+  totals: UsageTotals
+  points: UsagePoint[]
+}
+
+export interface UsageRange {
+  /** First bucket start — the requested `from` widened to its bucket (not widened on `/usage/top`). */
+  from: string
+  /** Exclusive. */
+  to: string
+  timezone: string
+  /** Oldest sampled hour, network-wide. Buckets before it are zeros that mean "no data". null = nothing recorded yet. */
+  samplingSince: string | null
+}
+
+export interface CustomerUsageLine extends UsageSeries {
+  routerosUsername: string
+  zohoRecurringInvoiceId: string | null
+}
+
+export interface CustomerUsage extends UsageRange {
+  zohoCustomerId: string
+  granularity: Granularity
+  /** Empty when the customer has no RouterOS username. */
+  lines: CustomerUsageLine[]
+  /** All lines summed. */
+  total: UsageSeries
+}
+
+/** Offline lines carry `null` in every field but the username. */
+export interface LiveLineUsage {
+  routerosUsername: string
+  online: boolean
+  /** RouterOS format, e.g. "1d3h12m5s". */
+  uptime: string | null
+  address: string | null
+  /** Current session only — restarts on every reconnect. */
+  sessionDownloadBytes: number | null
+  sessionUploadBytes: number | null
+  /** A one-second sample, in **bits** per second. */
+  downloadBitsPerSecond: number | null
+  uploadBitsPerSecond: number | null
+}
+
+export interface LiveUsageData {
+  lines: LiveLineUsage[]
+}
+
+export interface NetworkUsage extends UsageRange {
+  granularity: Granularity
+  totals: UsageTotals
+  points: NetworkUsagePoint[]
+}
+
+export interface TopConsumer extends UsageTotals {
+  routerosUsername: string
+  /** null = a secret no customer is mapped to. */
+  zohoCustomerId: string | null
+  name: string | null
+}
+
+/** Sorted by `totalBytes`, largest first. */
+export interface TopConsumers extends UsageRange {
+  items: TopConsumer[]
 }
